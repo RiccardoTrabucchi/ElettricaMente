@@ -2,7 +2,8 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Viewport ottimizzato per evitare zoom indesiderati -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ElettricaMente S.R.L. | Advanced System Integrator</title>
     <meta name="description" content="Impianti elettrici, domotica KNX, automazione PLC, PCB design e robotica.">
     
@@ -50,34 +51,36 @@
 
     <!-- HERO -->
     <section id="home" class="hero">
-        <div class="hero-content">
-            <div class="tech-badge">SYSTEM INTEGRATOR</div>
-            <h1 class="glitch-title">ELETTRICA<span class="text-teal">MENTE</span></h1>
-            <h2 class="typing-text" id="typing-placeholder"></h2>
-            <p class="hero-subtitle">
-                Diamo vita alla materia inerte. Dal quadro elettrico al cloud, progettiamo l'intero sistema nervoso della tua azienda.
-            </p>
-            <div class="cta-group">
-                <a href="#progetti" class="btn btn-primary">I Nostri Lavori</a>
-                <a href="#contatti" class="btn btn-outline">Contattaci</a>
-            </div>
-        </div>
-        
-        <div class="hero-visual-wrapper">
-            <div class="cube-container">
-                <div class="cube" id="hero-cube">
-                    <div class="face front"><i class="fas fa-microchip"></i></div>
-                    <div class="face right"><i class="fas fa-network-wired"></i></div>
-                    <div class="face back"><i class="fas fa-cogs"></i></div>
-                    <div class="face left"><i class="fas fa-cube"></i></div>
-                    <div class="face top"><i class="fas fa-shield-alt"></i></div>
-                    <div class="face bottom"><i class="fas fa-bolt"></i></div>
+        <div class="container hero-layout"> <!-- Aggiunto container per flex control -->
+            <div class="hero-content">
+                <div class="tech-badge">SYSTEM INTEGRATOR</div>
+                <h1 class="glitch-title">ELETTRICA<span class="text-teal">MENTE</span></h1>
+                <h2 class="typing-text" id="typing-placeholder"></h2>
+                <p class="hero-subtitle">
+                    Diamo vita alla materia inerte. Dal quadro elettrico al cloud, progettiamo l'intero sistema nervoso della tua azienda.
+                </p>
+                <div class="cta-group">
+                    <a href="#progetti" class="btn btn-primary">I Nostri Lavori</a>
+                    <a href="#contatti" class="btn btn-outline">Contattaci</a>
                 </div>
             </div>
-            <div class="cube-caption">
-                <h4 id="cube-title">Electronics</h4>
-                <div class="progress-bar"><div class="progress-fill"></div></div>
-                <p id="cube-desc">Progettazione PCB custom</p>
+            
+            <div class="hero-visual-wrapper">
+                <div class="cube-container">
+                    <div class="cube" id="hero-cube">
+                        <div class="face front"><i class="fas fa-microchip"></i></div>
+                        <div class="face right"><i class="fas fa-network-wired"></i></div>
+                        <div class="face back"><i class="fas fa-cogs"></i></div>
+                        <div class="face left"><i class="fas fa-cube"></i></div>
+                        <div class="face top"><i class="fas fa-shield-alt"></i></div>
+                        <div class="face bottom"><i class="fas fa-bolt"></i></div>
+                    </div>
+                </div>
+                <div class="cube-caption">
+                    <h4 id="cube-title">Electronics</h4>
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                    <p id="cube-desc">Progettazione PCB custom</p>
+                </div>
             </div>
         </div>
         
@@ -92,7 +95,7 @@
         <div class="container">
             <div class="split-layout">
                 <div class="text-col">
-                    <h2 class="section-title text-left">Architettura <br><span class="text-stroke">Integrata</span></h2>
+                    <h2 class="section-title text-left-desk">Architettura <br><span class="text-stroke">Integrata</span></h2>
                     <p class="lead-text">
                         Colleghiamo il pensiero (Software) all'azione (Hardware).
                     </p>
@@ -115,7 +118,7 @@
                             <div class="machine-id">LINE_PLC_01</div>
                             <div class="machine-status">
                                 <span class="status-indicator" id="sys-led"></span>
-                                SYSTEM: <span class="status-text" id="sys-text">READY</span>
+                                <span class="status-label">SYS:</span> <span class="status-text" id="sys-text">READY</span>
                             </div>
                             <div class="machine-mode">AUTO</div>
                         </div>
@@ -147,9 +150,9 @@
                                 <div class="tank-graphic">
                                     <div class="tank-liquid" id="hmi-liquid"></div>
                                     <div class="tank-marks">
-                                        <span>- 100</span>
-                                        <span>- 50</span>
-                                        <span>- 0</span>
+                                        <span>100</span>
+                                        <span>50</span>
+                                        <span>0</span>
                                     </div>
                                 </div>
                                 <div class="data-group">
@@ -158,7 +161,7 @@
                                         <span class="data-val" id="hmi-level">0 %</span>
                                     </div>
                                     <div class="data-row">
-                                        <span>VALVE:</span>
+                                        <span>VLV:</span>
                                         <span class="data-val" id="hmi-valve-text">CLS</span>
                                     </div>
                                 </div>
