@@ -29,8 +29,8 @@ body {
     position: relative;
 }
 
-/* Fix Scroll Modal */
-body.modal-open { overflow: hidden; height: 100vh; }
+/* FIX SCROLL MODAL - Ora usiamo solo overflow hidden senza fixed */
+body.modal-open { overflow: hidden; }
 
 /* CANVAS & OVERLAY */
 #circuit-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.25; display: block; }
@@ -66,18 +66,27 @@ body.modal-open { overflow: hidden; height: 100vh; }
 .nav-links a { text-decoration: none; color: var(--text-main); font-family: var(--font-tech); font-weight: 600; text-transform: uppercase; font-size: 0.95rem; transition: 0.3s; }
 .nav-links a:hover { color: var(--primary-blue); text-shadow: 0 0 8px var(--primary-blue); }
 
-/* MOBILE MENU */
+/* BURGER & MOBILE MENU ANIMATO */
 .burger { display: none; cursor: pointer; z-index: 1001; } 
-.burger div { width: 25px; height: 3px; background: var(--primary-blue); margin: 5px; transition: 0.3s; }
+.burger div { width: 25px; height: 3px; background: var(--primary-blue); margin: 5px; transition: 0.4s ease; }
+
+/* Burger Animation to X */
+.burger.toggle .line1 { transform: rotate(-45deg) translate(-5px, 6px); }
+.burger.toggle .line2 { opacity: 0; }
+.burger.toggle .line3 { transform: rotate(45deg) translate(-5px, -6px); }
 
 .mobile-menu {
-    position: fixed; top: 0; right: -100%; width: 80%; max-width: 300px; height: 100vh;
-    background: #0b111a; border-left: 2px solid var(--primary-blue);
+    position: fixed; top: 0; right: 0; width: 100%; max-width: 320px; height: 100vh;
+    background: #0b111a; border-left: 1px solid var(--primary-blue);
     display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 30px;
-    transition: 0.4s ease-in-out; z-index: 999; box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+    z-index: 999; box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+    /* Animazione Slide e Fade */
+    transform: translateX(100%); opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0), opacity 0.5s ease;
 }
-.mobile-menu.active { right: 0; }
-.mobile-link { font-family: var(--font-display); color: white; text-decoration: none; font-size: 1.2rem; text-transform: uppercase; }
+.mobile-menu.active { transform: translateX(0); opacity: 1; }
+.mobile-link { font-family: var(--font-display); color: white; text-decoration: none; font-size: 1.5rem; text-transform: uppercase; transition: 0.3s; }
+.mobile-link:hover { color: var(--primary-blue); letter-spacing: 2px; }
 
 /* HERO */
 .hero { min-height: 100vh; display: flex; align-items: center; padding: 120px 0 50px; position: relative; overflow: hidden; }
@@ -93,22 +102,22 @@ body.modal-open { overflow: hidden; height: 100vh; }
 .btn-primary { background: var(--primary-blue); color: #000; }
 .btn-outline { border: 1px solid var(--primary-blue); color: var(--primary-blue); margin-left: 15px; }
 
-/* CUBE */
+/* CUBE - ANIMAZIONE MORBIDA */
 .hero-visual-wrapper { display: flex; flex-direction: column; align-items: center; gap: 30px; flex: 1; min-width: 200px; }
 .cube-container { width: 160px; height: 160px; perspective: 1000px; }
-.cube { width: 100%; height: 100%; transform-style: preserve-3d; animation: rotateFaces 12s infinite ease-in-out; will-change: transform; }
+.cube { width: 100%; height: 100%; transform-style: preserve-3d; animation: floatRotate 20s linear infinite; will-change: transform; }
 .face { position: absolute; width: 160px; height: 160px; background: rgba(3,10,20,0.85); border: 2px solid var(--primary-blue); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; color: var(--primary-blue); box-shadow: 0 0 30px rgba(0,242,255,0.15) inset; backface-visibility: hidden; }
 .front { transform: translateZ(80px); } .right { transform: rotateY(90deg) translateZ(80px); } .back { transform: rotateY(180deg) translateZ(80px); } .left { transform: rotateY(-90deg) translateZ(80px); } .top { transform: rotateX(90deg) translateZ(80px); } .bottom { transform: rotateX(-90deg) translateZ(80px); }
 
-@keyframes rotateFaces { 
-    0%, 15% { transform: rotateX(0deg) rotateY(0deg); } 
-    16.6%, 31.6% { transform: rotateX(0deg) rotateY(-90deg); } 
-    33.3%, 48.3% { transform: rotateX(0deg) rotateY(-180deg); } 
-    50%, 65% { transform: rotateX(0deg) rotateY(-270deg); } 
-    66.6%, 81.6% { transform: rotateX(-90deg) rotateY(0deg); } 
-    83.3%, 98.3% { transform: rotateX(90deg) rotateY(0deg); } 
-    100% { transform: rotateX(0deg) rotateY(0deg); } 
+/* Animazione fluida e dinamica */
+@keyframes floatRotate {
+    0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+    25% { transform: rotateX(10deg) rotateY(90deg) rotateZ(5deg); }
+    50% { transform: rotateX(0deg) rotateY(180deg) rotateZ(0deg); }
+    75% { transform: rotateX(-10deg) rotateY(270deg) rotateZ(-5deg); }
+    100% { transform: rotateX(0deg) rotateY(360deg) rotateZ(0deg); }
 }
+
 .cube-caption { text-align: center; background: rgba(0,242,255,0.05); border: 1px solid var(--primary-blue); padding: 10px; width: 200px; border-radius: 8px; backdrop-filter: blur(5px); }
 .cube-caption h4 { color: var(--primary-blue); font-family: var(--font-display); font-size: 1rem; }
 .progress-bar { width: 100%; height: 2px; background: #111; margin: 8px 0; }
@@ -119,8 +128,9 @@ body.modal-open { overflow: hidden; height: 100vh; }
 .wheel { width: 4px; height: 4px; background: var(--primary-blue); border-radius: 50%; position: absolute; top: 6px; left: 50%; transform: translateX(-50%); animation: scrollWheel 1.5s infinite; }
 @keyframes scrollWheel { 100% { top: 20px; opacity: 0; } }
 
-/* MARQUEE */
-.tech-marquee-section { background: rgba(0,0,0,0.5); border-top: 1px solid #222; border-bottom: 1px solid #222; padding: 15px 0; overflow: hidden; margin-top: 50px; width: 100vw; position: relative; left: 50%; transform: translateX(-50%); }
+/* MARQUEE & TITLE */
+.tech-marquee-section { background: rgba(0,0,0,0.5); border-top: 1px solid #222; border-bottom: 1px solid #222; padding: 20px 0; overflow: hidden; margin-top: 50px; width: 100vw; position: relative; left: 50%; transform: translateX(-50%); text-align: center; }
+.marquee-title { font-family: var(--font-tech); color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px; letter-spacing: 2px; text-transform: uppercase; }
 .marquee-container { width: 100%; overflow: hidden; white-space: nowrap; }
 .marquee-content { display: inline-block; animation: marquee 20s linear infinite; }
 .marquee-content span { font-family: var(--font-display); font-size: 1.2rem; color: #555; margin: 0 30px; font-weight: bold; }
@@ -161,10 +171,7 @@ body.modal-open { overflow: hidden; height: 100vh; }
 .comp-status.active { background: var(--accent-teal); box-shadow: 0 0 5px var(--accent-teal); }
 .comp-status.alarm { background: var(--warn-red); }
 
-/* --- ANIMAZIONE INGRANAGGIO (AGGIUNTA) --- */
-@keyframes spin { 
-    100% { transform: rotate(360deg); } 
-}
+@keyframes spin { 100% { transform: rotate(360deg); } }
 .motor-graphic { font-size: 2rem; color: #718096; margin: 10px 0; display: inline-block; }
 
 .tank-graphic { width: 30px; height: 50px; border: 2px solid #4a5568; margin: 0 auto 10px; position: relative; background: #1a202c; border-radius: 4px; overflow: hidden; }
@@ -192,9 +199,21 @@ body.modal-open { overflow: hidden; height: 100vh; }
 
 .services-grid-advanced { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
 .service-card { background: rgba(10,20,30,0.4); padding: 25px; border: 1px solid rgba(255,255,255,0.05); position: relative; transition: 0.3s; overflow: hidden; }
-.service-icon { font-size: 2rem; color: #555; margin-bottom: 15px; }
+.service-icon { font-size: 2rem; color: #555; margin-bottom: 15px; transition: 0.3s; }
 .card-border { position: absolute; top:0; left:0; width:3px; height:0%; background:var(--primary-blue); transition:0.4s; }
-.service-card:hover .card-border { height: 100%; }
+
+/* Effetto Hover Desktop */
+@media (min-width: 993px) {
+    .service-card:hover { transform: translateY(-5px); border-color: var(--primary-blue); }
+    .service-card:hover .service-icon { color: var(--primary-blue); }
+    .service-card:hover .card-border { height: 100%; }
+}
+
+/* Effetto Focus Mobile (Attivato da JS) */
+.service-card.highlight-active { transform: scale(1.05); border-color: var(--primary-blue); background: rgba(10,20,30,0.8); box-shadow: 0 0 15px rgba(0,242,255,0.1); }
+.service-card.highlight-active .service-icon { color: var(--primary-blue); }
+.service-card.highlight-active .card-border { height: 100%; }
+.service-card:not(.highlight-active) { opacity: 0.5; transform: scale(0.95); } /* Oscura i non attivi */
 
 .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
 .project-card { height: 250px; position: relative; border-radius: 6px; overflow: hidden; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
@@ -205,18 +224,9 @@ body.modal-open { overflow: hidden; height: 100vh; }
 .project-card:hover .project-info { transform: translateY(0); }
 .overlay-scan { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, transparent 50%, rgba(0,242,255,0.05) 50%); background-size: 100% 3px; opacity: 0; transition: 0.3s; pointer-events: none; }
 
-/* HOVER & FADE FIX */
-.fade-init { 
-    opacity: 0; 
-    transform: translateY(30px); 
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out; /* rimosso all */
-}
-.fade-init.visible { 
-    opacity: 1; 
-    transform: translateY(0); 
-}
+.fade-init { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+.fade-init.visible { opacity: 1; transform: translateY(0); }
 
-/* Hover funziona ora perché non c'è !important nella classe visible */
 .contact-hub { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 30px; }
 .contact-node { background: rgba(10,20,30,0.5); padding: 30px 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); min-width: 200px; flex: 1; transition: 0.3s; }
 .contact-node:hover { border-color: var(--primary-blue); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,242,255,0.1); }
@@ -260,7 +270,6 @@ footer { padding: 30px 0; background: #020202; border-top: 1px solid #111; }
 /* MEDIA QUERIES */
 
 @media screen and (max-width: 992px) {
-    /* Tablet: Impila le colonne */
     .hero-layout, .split-layout { flex-direction: column; gap: 50px; text-align: center; }
     .hero-content { align-items: center; display: flex; flex-direction: column; }
     .text-left-desk { text-align: center; }
@@ -268,10 +277,12 @@ footer { padding: 30px 0; background: #020202; border-top: 1px solid #111; }
     .modal-body { flex-direction: column; }
     .modal-details { border-left: none; border-top: 1px solid #333; }
     .main-image-container { height: 280px; }
+    /* Reset Services Style for Mobile Logic */
+    .service-card { opacity: 0.5; transform: scale(0.95); } /* Default state mobile */
 }
 
 @media screen and (max-width: 768px) {
-    /* Mobile */
+    .scroll-down { display: none; } /* NASCONDE ROTELLINA */
     .section-padding { padding: 60px 0; }
     .section-title { font-size: 2rem; }
     .container { width: 92%; }
