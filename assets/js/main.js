@@ -73,7 +73,7 @@ if(cubeTitle && cubeDesc && progressFill) {
     syncCube();
 }
 
-/* --- HMI SIMULATION (Error Proof) --- */
+/* --- HMI SIMULATION (Fixed Gear & Alarms) --- */
 const sysLed = document.getElementById('sys-led');
 const sysText = document.getElementById('sys-text');
 const hmiMotorIcon = document.getElementById('hmi-motor-icon');
@@ -97,7 +97,7 @@ if(sysLed && hmiLiquid) {
         let css = type === "ERR" ? "alarm-state-err" : (type === "INF" ? "alarm-state-inf" : "alarm-state-ok");
         row.innerHTML = `<span>${time}</span><span>${msg}</span><span class="${css}">${type}</span>`;
         hmiAlarms.prepend(row);
-        if(hmiAlarms.children.length > 4) hmiAlarms.removeChild(hmiAlarms.lastChild); // Meno log su mobile
+        if(hmiAlarms.children.length > 4) hmiAlarms.removeChild(hmiAlarms.lastChild);
     }
 
     function automationCycle() {
@@ -134,11 +134,15 @@ if(sysLed && hmiLiquid) {
         let amps = freq > 0 ? (freq * 0.24) + (Math.random() * 0.5) : 0;
         hmiCurr.innerText = amps.toFixed(1);
 
+        // LOGICA INGRANAGGIO CORRETTA
         if (freq > 0) {
-            hmiMotorIcon.style.animation = `spin ${2000 - (freq * 30)}ms linear infinite`;
+            // Usa solo l'animazione se freq > 0. La velocità cambia con il calcolo ms
+            let duration = 2000 - (freq * 30);
+            hmiMotorIcon.style.animation = `spin ${duration}ms linear infinite`;
             hmiMotorIcon.style.color = "#00ffaa";
         } else {
-            hmiMotorIcon.style.animation = "none"; hmiMotorIcon.style.color = "#555";
+            hmiMotorIcon.style.animation = "none"; 
+            hmiMotorIcon.style.color = "#555";
         }
     }
 
@@ -154,10 +158,10 @@ if(sysLed && hmiLiquid) {
             addLog("Reset OK", "INF"); state = "FILL"; level = 10; freq = 0;
         }, 4000);
     }
-    setInterval(automationCycle, 150); // Leggermente più lento per performance
+    setInterval(automationCycle, 150);
 }
 
-/* --- PARTICLES CANVAS (Ridotto drasticamente per mobile) --- */
+/* --- PARTICLES CANVAS --- */
 const canvas = document.getElementById('circuit-canvas');
 if(canvas) {
     const ctx = canvas.getContext('2d');
@@ -170,7 +174,6 @@ if(canvas) {
     
     function init(){ 
         p=[]; 
-        // Mobile: solo 20 particelle per non bloccare lo scroll
         let count = window.innerWidth < 768 ? 20 : 50; 
         for(let i=0;i<count;i++) p.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5),vy:(Math.random()-.5)}); 
     }
@@ -199,7 +202,6 @@ const mobileMenu=document.querySelector('.mobile-menu');
 if(burger && mobileMenu) {
     burger.onclick = () => {
         mobileMenu.classList.toggle('active');
-        burger.classList.toggle('toggle'); // Per animazioni CSS future
     };
     document.querySelectorAll('.mobile-link').forEach(l => {
         l.onclick = () => mobileMenu.classList.remove('active');
@@ -267,13 +269,16 @@ if(closeModalBtn) closeModalBtn.onclick = closeModalFunction;
 const modalBackdrop = document.querySelector('.modal-backdrop');
 if(modalBackdrop) modalBackdrop.onclick = closeModalFunction;
 
-/* --- FADE IN --- */
+/* --- FADE IN FIXED --- */
+// Usiamo le classi CSS già presenti nel file di stile, senza iniettare JS sporco
 const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
+    entries.forEach(entry => { 
+        if(entry.isIntersecting) entry.target.classList.add('visible'); 
+    });
 }, { threshold: 0.1 });
-document.querySelectorAll('.service-card, .project-card, .timeline-item, .contact-node, .hmi-panel').forEach(el => {
-    el.classList.add('fade-init'); observer.observe(el);
+
+// Selezioniamo tutti gli elementi che devono avere il fade
+document.querySelectorAll('.fade-init').forEach(el => {
+    observer.observe(el);
 });
-const style = document.createElement("style");
-style.innerText = `.fade-init { opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; } .visible { opacity: 1 !important; transform: translateY(0) !important; }`;
-document.head.appendChild(style);
+// Rimosso il blocco style.innerText che rompeva le animazioni
