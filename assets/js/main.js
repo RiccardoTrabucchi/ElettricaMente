@@ -73,7 +73,7 @@ if(cubeTitle && cubeDesc && progressFill) {
     syncCube();
 }
 
-/* --- HMI SIMULATION (Fixed Gear & Alarms) --- */
+/* --- HMI SIMULATION (Fix Valore Numerico) --- */
 const sysLed = document.getElementById('sys-led');
 const sysText = document.getElementById('sys-text');
 const hmiMotorIcon = document.getElementById('hmi-motor-icon');
@@ -134,9 +134,7 @@ if(sysLed && hmiLiquid) {
         let amps = freq > 0 ? (freq * 0.24) + (Math.random() * 0.5) : 0;
         hmiCurr.innerText = amps.toFixed(1);
 
-        // LOGICA INGRANAGGIO CORRETTA
         if (freq > 0) {
-            // Usa solo l'animazione se freq > 0. La velocità cambia con il calcolo ms
             let duration = 2000 - (freq * 30);
             hmiMotorIcon.style.animation = `spin ${duration}ms linear infinite`;
             hmiMotorIcon.style.color = "#00ffaa";
@@ -149,7 +147,9 @@ if(sysLed && hmiLiquid) {
     function triggerAlarm() {
         alarmActive = true;
         sysText.innerText = "ALARM"; sysLed.className = "status-indicator alarm";
-        hmiCurr.classList.add('text-alarm'); hmiCurr.innerText = "ERR";
+        hmiCurr.classList.add('text-alarm'); 
+        // MODIFICA RICHIESTA: Mostra il valore alto invece di ERR
+        hmiCurr.innerText = "28.5 A";
         addLog("OVRLOAD M1", "ERR");
         motorLed.classList.remove('active'); motorLed.classList.add('alarm');
         setTimeout(() => {
@@ -159,6 +159,46 @@ if(sysLed && hmiLiquid) {
         }, 4000);
     }
     setInterval(automationCycle, 150);
+}
+
+/* --- MOBILE MENU ANIMATION --- */
+const burger = document.querySelector('.burger');
+const mobileMenu = document.querySelector('.mobile-menu');
+
+if(burger && mobileMenu) {
+    burger.onclick = () => {
+        mobileMenu.classList.toggle('active');
+        burger.classList.toggle('toggle'); // Attiva animazione X
+    };
+    document.querySelectorAll('.mobile-link').forEach(l => {
+        l.onclick = () => {
+            mobileMenu.classList.remove('active');
+            burger.classList.remove('toggle');
+        };
+    });
+}
+
+/* --- SERVICE FOCUS OBSERVER (SOLO MOBILE) --- */
+// Questo script illumina la card al centro dello schermo solo se siamo su mobile
+if (window.innerWidth <= 992) {
+    const serviceObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('highlight-active');
+            } else {
+                entry.target.classList.remove('highlight-active');
+            }
+        });
+    }, {
+        root: null,
+        // Threshold: 0 e margini negativi creano una "linea" al centro dello schermo
+        rootMargin: '-45% 0px -45% 0px', 
+        threshold: 0
+    });
+
+    document.querySelectorAll('.service-card').forEach(card => {
+        serviceObserver.observe(card);
+    });
 }
 
 /* --- PARTICLES CANVAS --- */
@@ -195,21 +235,10 @@ if(canvas) {
     window.addEventListener('resize',()=>{resize();init();}); resize(); init(); draw();
 }
 
-/* --- MOBILE MENU & MODAL --- */
-const burger=document.querySelector('.burger');
-const mobileMenu=document.querySelector('.mobile-menu');
-
-if(burger && mobileMenu) {
-    burger.onclick = () => {
-        mobileMenu.classList.toggle('active');
-    };
-    document.querySelectorAll('.mobile-link').forEach(l => {
-        l.onclick = () => mobileMenu.classList.remove('active');
-    });
-}
-
+/* --- MODAL SCROLL FIX (PC & MOBILE) --- */
 const modal = document.getElementById('project-modal');
 const modalMainImg = document.getElementById('modal-main-img');
+let scrollPosition = 0;
 
 function setImage(imgElement, src) {
     let img = new Image();
@@ -261,7 +290,10 @@ function closeModalFunction() {
 }
 
 document.querySelectorAll('.project-card').forEach(c => {
-    c.onclick = () => openModal(parseInt(c.dataset.id));
+    c.onclick = (e) => {
+        e.preventDefault(); // Previene salti strani
+        openModal(parseInt(c.dataset.id));
+    };
 });
 
 const closeModalBtn = document.querySelector('.close-modal');
@@ -269,16 +301,13 @@ if(closeModalBtn) closeModalBtn.onclick = closeModalFunction;
 const modalBackdrop = document.querySelector('.modal-backdrop');
 if(modalBackdrop) modalBackdrop.onclick = closeModalFunction;
 
-/* --- FADE IN FIXED --- */
-// Usiamo le classi CSS già presenti nel file di stile, senza iniettare JS sporco
+/* --- FADE IN --- */
 const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => { 
         if(entry.isIntersecting) entry.target.classList.add('visible'); 
     });
 }, { threshold: 0.1 });
 
-// Selezioniamo tutti gli elementi che devono avere il fade
 document.querySelectorAll('.fade-init').forEach(el => {
     observer.observe(el);
 });
-// Rimosso il blocco style.innerText che rompeva le animazioni
