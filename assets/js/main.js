@@ -5,10 +5,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const projectsData = [
         { 
             id: 1, 
-            title: "Revamping Linea", 
-            category: "Automation", 
-            desc: "Sostituzione PLC obsoleto con S7-1500.", 
-            specs: ["Siemens S7", "Profinet", "Safety"], 
+            title: "Armadio elettrico Subdued", 
+            category: "Distribuzione elettrica", 
+            desc: "Cablaggio del quadro elettrico generale per un negozio di abbigliamento. Si occupa della distribuzione della linea elettrica a tutte le utenze.", 
+            specs: ["Schneider Electric", "Modbus", "Sicurezza elettrica", "Monitoraggio dell'energia"], 
             images: [
                 "assets/img/progetti/industria_1.jpg", 
                 "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80", 
@@ -17,10 +17,10 @@ document.addEventListener("DOMContentLoaded", function() {
         },
         { 
             id: 2, 
-            title: "Villa Smart", 
+            title: "Capannone domotico", 
             category: "Domotica", 
-            desc: "Integrazione KNX totale.", 
-            specs: ["KNX", "DALI", "Voice Control"], 
+            desc: "Integrazione KNX per la gestione delle luci di un intero capannone di un'azienda alimentare.", 
+            specs: ["KNX", "Ilevia", "Controllo remoto"], 
             images: [
                 "assets/img/progetti/villa_1.jpg", 
                 "https://images.unsplash.com/photo-1558002038-1091a1661116?auto=format&fit=crop&w=800&q=80", 
@@ -29,10 +29,10 @@ document.addEventListener("DOMContentLoaded", function() {
         },
         { 
             id: 3, 
-            title: "Scheda IOT", 
-            category: "R&D", 
-            desc: "PCB custom per telemetria.", 
-            specs: ["ESP32", "LoRa", "Altium"], 
+            title: "PCB personalizzati per cilindri pneumatici", 
+            category: "PCB", 
+            desc: "PCB personalizzato per dei cilindri pneumatici controllati da elettrovalvole. Progettato e assemblato da noi.", 
+            specs: ["PCB", "Altium"], 
             images: [
                 "assets/img/progetti/pcb_1.jpg", 
                 "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80", 
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     /* --- TYPEWRITER (Scrittura automatica Hero) --- */
-    const typeText = ["Impianti Elettrici", "Automazione PLC", "Domotica KNX", "Robotica"];
+    const typeText = ["Impianti Elettrici civili e industriali", "Automazioni", "Impianti tecnologici"];
     let count=0, index=0, currentText="", letter="";
     (function type(){
         let el = document.getElementById('typing-placeholder');
@@ -75,11 +75,11 @@ document.addEventListener("DOMContentLoaded", function() {
     /* --- CUBE SYNC 2.0 (Logica Rotazione Sincronizzata) --- */
     const cubeData = [
         { class: 'show-front',  t: "Electronics",     d: "Progettazione PCB Custom" },
-        { class: 'show-right',  t: "Networking",      d: "Infrastrutture Fibra & Rame" },
-        { class: 'show-back',   t: "Automation",      d: "Sviluppo Software PLC" },
+        { class: 'show-right',  t: "Networking",      d: "Infrastrutture fibra ottica e rete cablata" },
+        { class: 'show-back',   t: "Automation",      d: "Sviluppo programmi PLC" },
         { class: 'show-left',   t: "Prototyping",     d: "Modellazione e Stampa 3D" },
-        { class: 'show-top',    t: "Cybersecurity",   d: "Protezione Reti OT" },
-        { class: 'show-bottom', t: "Power Systems",   d: "Quadri di Distribuzione" }
+        { class: 'show-top',    t: "Security",        d: "Sicurezza secondo gli standard CEI" },
+        { class: 'show-bottom', t: "Power Systems",   d: "Quadri di distribuzione e automazione" }
     ];
 
     const heroCube = document.getElementById('hero-cube');
