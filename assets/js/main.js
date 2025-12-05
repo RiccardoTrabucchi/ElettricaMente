@@ -49,31 +49,48 @@ let count=0, index=0, currentText="", letter="";
     if(letter.length===currentText.length){count++;index=0;setTimeout(type,2000);}else{setTimeout(type,100);}
 })();
 
-/* --- CUBE SYNC --- */
-const cubeStates = [
-    {t:"Progettazione HW", d:"Sviluppo Schemi Elettrici"}, {t:"Networking", d:"Reti Profinet & Ethernet"},
-    {t:"Automazione", d:"Logica PLC Avanzata"}, {t:"Prototipazione", d:"Stampa 3D e PCB"},
-    {t:"Sicurezza", d:"Safety Interlock"}, {t:"Power", d:"Quadri Distribuzione"}
+/* --- CUBE SYNC 2.0 (Logic Based & Smooth) --- */
+const cubeData = [
+    { class: 'show-front',  t: "Electronics",     d: "Progettazione PCB Custom" },
+    { class: 'show-right',  t: "Networking",      d: "Infrastrutture Fibra & Rame" },
+    { class: 'show-back',   t: "Automation",      d: "Sviluppo Software PLC" },
+    { class: 'show-left',   t: "Prototyping",     d: "Modellazione e Stampa 3D" },
+    { class: 'show-top',    t: "Cybersecurity",   d: "Protezione Reti OT" },
+    { class: 'show-bottom', t: "Power Systems",   d: "Quadri di Distribuzione" }
 ];
+
+const heroCube = document.getElementById('hero-cube');
 const cubeTitle = document.getElementById('cube-title');
 const cubeDesc = document.getElementById('cube-desc');
 const progressFill = document.querySelector('.progress-fill');
 
-if(cubeTitle && cubeDesc && progressFill) {
-    function syncCube(){
-        let start=Date.now();
-        setInterval(()=>{
-            let el=(Date.now()-start)%12000; let idx=Math.floor(el/2000);
-            progressFill.style.width=`${(el%2000)/20}%`;
-            if(cubeTitle.innerText!==cubeStates[idx].t){
-                cubeTitle.innerText=cubeStates[idx].t; cubeDesc.innerText=cubeStates[idx].d;
-            }
-        },50);
+if(heroCube && cubeTitle) {
+    let currentIndex = 0;
+    const intervalTime = 3000; 
+    let startTime = Date.now();
+
+    function updateCube() {
+        let elapsed = Date.now() - startTime;
+        let progress = (elapsed / intervalTime) * 100;
+
+        if (elapsed >= intervalTime) {
+            currentIndex = (currentIndex + 1) % cubeData.length;
+            startTime = Date.now();
+            progress = 0;
+            heroCube.className = `cube ${cubeData[currentIndex].class}`;
+            setTimeout(() => {
+                cubeTitle.innerText = cubeData[currentIndex].t;
+                cubeDesc.innerText = cubeData[currentIndex].d;
+            }, 200); 
+        }
+
+        if(progressFill) progressFill.style.width = `${progress}%`;
+        requestAnimationFrame(updateCube);
     }
-    syncCube();
+    updateCube();
 }
 
-/* --- HMI SIMULATION (Fix Valore Numerico) --- */
+/* --- HMI SIMULATION (Valore Numerico in Alarm) --- */
 const sysLed = document.getElementById('sys-led');
 const sysText = document.getElementById('sys-text');
 const hmiMotorIcon = document.getElementById('hmi-motor-icon');
@@ -148,8 +165,7 @@ if(sysLed && hmiLiquid) {
         alarmActive = true;
         sysText.innerText = "ALARM"; sysLed.className = "status-indicator alarm";
         hmiCurr.classList.add('text-alarm'); 
-        // MODIFICA RICHIESTA: Mostra il valore alto invece di ERR
-        hmiCurr.innerText = "28.5 A";
+        hmiCurr.innerText = "28.5 A"; // Mostra valore numerico invece di ERR
         addLog("OVRLOAD M1", "ERR");
         motorLed.classList.remove('active'); motorLed.classList.add('alarm');
         setTimeout(() => {
@@ -168,7 +184,7 @@ const mobileMenu = document.querySelector('.mobile-menu');
 if(burger && mobileMenu) {
     burger.onclick = () => {
         mobileMenu.classList.toggle('active');
-        burger.classList.toggle('toggle'); // Attiva animazione X
+        burger.classList.toggle('toggle'); 
     };
     document.querySelectorAll('.mobile-link').forEach(l => {
         l.onclick = () => {
@@ -179,7 +195,6 @@ if(burger && mobileMenu) {
 }
 
 /* --- SERVICE FOCUS OBSERVER (SOLO MOBILE) --- */
-// Questo script illumina la card al centro dello schermo solo se siamo su mobile
 if (window.innerWidth <= 992) {
     const serviceObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -191,7 +206,6 @@ if (window.innerWidth <= 992) {
         });
     }, {
         root: null,
-        // Threshold: 0 e margini negativi creano una "linea" al centro dello schermo
         rootMargin: '-45% 0px -45% 0px', 
         threshold: 0
     });
@@ -235,10 +249,9 @@ if(canvas) {
     window.addEventListener('resize',()=>{resize();init();}); resize(); init(); draw();
 }
 
-/* --- MODAL SCROLL FIX (PC & MOBILE) --- */
+/* --- MODAL LOGIC (Fix Scroll & Gallery) --- */
 const modal = document.getElementById('project-modal');
 const modalMainImg = document.getElementById('modal-main-img');
-let scrollPosition = 0;
 
 function setImage(imgElement, src) {
     let img = new Image();
@@ -291,7 +304,7 @@ function closeModalFunction() {
 
 document.querySelectorAll('.project-card').forEach(c => {
     c.onclick = (e) => {
-        e.preventDefault(); // Previene salti strani
+        e.preventDefault(); 
         openModal(parseInt(c.dataset.id));
     };
 });
