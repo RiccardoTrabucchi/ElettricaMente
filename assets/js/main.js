@@ -1,6 +1,7 @@
+// Aspetta che tutto l'HTML sia caricato prima di eseguire
 document.addEventListener("DOMContentLoaded", function() {
     
-    /* --- DATABASE PROGETTI --- */
+    /* --- DATABASE PROGETTI (Con 3 immagini per test) --- */
     const projectsData = [
         { 
             id: 1, 
@@ -40,24 +41,27 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     ];
 
-    /* --- COOKIE MANAGER (FIXED) --- */
+    /* --- COOKIE MANAGER (Gestione Consenso) --- */
     const cookieBanner = document.getElementById('cookie-banner');
     const acceptBtn = document.getElementById('accept-cookies');
 
     if (cookieBanner && acceptBtn) {
+        // Controlla se l'utente ha già accettato
         const consent = localStorage.getItem('elettricamente_consent');
         if (!consent) {
+            // Se no, mostra banner dopo 1 secondo
             setTimeout(() => {
                 cookieBanner.classList.add('show');
             }, 1000);
         }
+        // Al click salva e chiudi
         acceptBtn.onclick = () => {
             localStorage.setItem('elettricamente_consent', 'true');
             cookieBanner.classList.remove('show');
         };
     }
 
-    /* --- TYPEWRITER --- */
+    /* --- TYPEWRITER (Scrittura automatica Hero) --- */
     const typeText = ["Impianti Elettrici", "Automazione PLC", "Domotica KNX", "Robotica"];
     let count=0, index=0, currentText="", letter="";
     (function type(){
@@ -68,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if(letter.length===currentText.length){count++;index=0;setTimeout(type,2000);}else{setTimeout(type,100);}
     })();
 
-    /* --- CUBE SYNC 2.0 (Logic Based & Smooth) --- */
+    /* --- CUBE SYNC 2.0 (Logica Rotazione Sincronizzata) --- */
     const cubeData = [
         { class: 'show-front',  t: "Electronics",     d: "Progettazione PCB Custom" },
         { class: 'show-right',  t: "Networking",      d: "Infrastrutture Fibra & Rame" },
@@ -109,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function() {
         updateCube();
     }
 
-    /* --- HMI SIMULATION (Valore Numerico in Alarm) --- */
+    /* --- HMI SIMULATION (Allarmi Numerici & Animazione Gear) --- */
     const sysLed = document.getElementById('sys-led');
     const sysText = document.getElementById('sys-text');
     const hmiMotorIcon = document.getElementById('hmi-motor-icon');
@@ -184,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function() {
             alarmActive = true;
             sysText.innerText = "ALARM"; sysLed.className = "status-indicator alarm";
             hmiCurr.classList.add('text-alarm'); 
-            hmiCurr.innerText = "28.5 A"; // Mostra valore numerico
+            hmiCurr.innerText = "28.5 A"; // Mostra Valore invece di ERR
             addLog("OVRLOAD M1", "ERR");
             motorLed.classList.remove('active'); motorLed.classList.add('alarm');
             setTimeout(() => {
@@ -214,6 +218,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     /* --- SERVICE FOCUS OBSERVER (SOLO MOBILE) --- */
+    // Attiva illuminazione card al centro dello schermo
     if (window.innerWidth <= 992) {
         const serviceObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -225,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         }, {
             root: null,
-            rootMargin: '-45% 0px -45% 0px', 
+            rootMargin: '-45% 0px -45% 0px', // Triggera solo al centro esatto
             threshold: 0
         });
 
@@ -276,6 +281,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let img = new Image();
         img.onload = () => { imgElement.src = src; };
         img.onerror = () => { 
+            // Fallback se immagine non trovata
             imgElement.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22600%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20600%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1%20text%20%7B%20fill%3A%2300f2ff%3Bfont-weight%3Abold%3Bfont-family%3Amonospace%3Bfont-size%3A24pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1%22%3E%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22%23111%22%3E%3C%2Frect%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20alignment-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%3ENO IMG%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fsvg%3E';
         };
         img.src = src;
