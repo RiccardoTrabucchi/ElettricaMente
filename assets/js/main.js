@@ -324,3 +324,24 @@ const observer = new IntersectionObserver(entries => {
 document.querySelectorAll('.fade-init').forEach(el => {
     observer.observe(el);
 });
+
+/* --- COOKIE MANAGER --- */
+const cookieBanner = document.getElementById('cookie-banner');
+const acceptBtn = document.getElementById('accept-cookies');
+
+// Controlla se il consenso è già stato dato
+if (!localStorage.getItem('elettricamente_consent')) {
+    // Aspetta 2 secondi prima di mostrare il banner per un effetto elegante
+    setTimeout(() => {
+        cookieBanner.classList.add('show');
+    }, 2000);
+}
+
+if(acceptBtn) {
+    acceptBtn.onclick = () => {
+        // Salva il consenso nel browser
+        localStorage.setItem('elettricamente_consent', 'true');
+        // Nascondi il banner
+        cookieBanner.classList.remove('show');
+    };
+}
