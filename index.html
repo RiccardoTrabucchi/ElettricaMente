@@ -2,31 +2,37 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <!-- Viewport bloccato per evitare zoom indesiderati su mobile -->
+    <!-- Viewport ottimizzato: "user-scalable=no" impedisce lo zoom accidentale su mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
     <title>ElettricaMente S.R.L. | Advanced System Integrator</title>
     <meta name="description" content="Impianti elettrici, domotica KNX, automazione PLC, PCB design e robotica.">
     
-    <!-- Fonts -->
+    <!-- Fonts Google (Orbitron per titoli sci-fi, Roboto per testi leggibili) -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     
-    <!-- Icons -->
+    <!-- Icone FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- CSS -->
+    <!-- Foglio di stile principale -->
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
+    <!-- Sfondo animato (Gestito da JS) -->
     <canvas id="circuit-canvas"></canvas>
+    <!-- Filtro scuro per rendere leggibile il testo sopra lo sfondo -->
     <div class="vignette-overlay"></div>
 
-    <!-- Navbar -->
+    <!-- NAVBAR FISSA -->
     <nav class="navbar">
         <div class="container nav-container">
+            <!-- Logo -->
             <a href="#" class="logo-wrapper">
                 <img src="assets/img/logo.png" alt="ElettricaMente Logo" class="logo-img">
             </a>
+            
+            <!-- Link Desktop -->
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#chi-siamo">Visione</a></li>
@@ -35,6 +41,8 @@
                 <li><a href="#progetti">Portfolio</a></li>
                 <li><a href="#contatti">Contatti</a></li>
             </ul>
+            
+            <!-- Icona Burger per Mobile (3 linee) -->
             <div class="burger">
                 <div class="line1"></div>
                 <div class="line2"></div>
@@ -43,7 +51,7 @@
         </div>
     </nav>
 
-    <!-- Mobile Menu -->
+    <!-- MENU MOBILE A COMPARSA LATERALE -->
     <div class="mobile-menu">
         <a href="#home" class="mobile-link">Home</a>
         <a href="#chi-siamo" class="mobile-link">Visione</a>
@@ -53,12 +61,14 @@
         <a href="#contatti" class="mobile-link">Contatti</a>
     </div>
 
-    <!-- HERO -->
+    <!-- SEZIONE HERO (Prima schermata) -->
     <section id="home" class="hero">
         <div class="container hero-layout">
+            <!-- Colonna Testo -->
             <div class="hero-content">
                 <div class="tech-badge">SYSTEM INTEGRATOR</div>
                 <h1 class="glitch-title">ELETTRICA<span class="text-teal">MENTE</span></h1>
+                <!-- Testo che si scrive da solo (Typewriter) -->
                 <h2 class="typing-text" id="typing-placeholder"></h2>
                 <p class="hero-subtitle">
                     Diamo vita alla materia inerte. Dal quadro elettrico al cloud, progettiamo l'intero sistema nervoso della tua azienda.
@@ -69,9 +79,11 @@
                 </div>
             </div>
             
+            <!-- Colonna Visuale (Cubo 3D) -->
             <div class="hero-visual-wrapper">
                 <div class="cube-container">
                     <div class="cube" id="hero-cube">
+                        <!-- Le 6 facce del cubo -->
                         <div class="face front"><i class="fas fa-microchip"></i></div>
                         <div class="face right"><i class="fas fa-network-wired"></i></div>
                         <div class="face back"><i class="fas fa-cogs"></i></div>
@@ -80,6 +92,7 @@
                         <div class="face bottom"><i class="fas fa-bolt"></i></div>
                     </div>
                 </div>
+                <!-- Didascalia sincronizzata col cubo -->
                 <div class="cube-caption">
                     <h4 id="cube-title">Electronics</h4>
                     <div class="progress-bar"><div class="progress-fill"></div></div>
@@ -88,16 +101,18 @@
             </div>
         </div>
         
+        <!-- Icona Mouse che scorre (Nascosta su mobile via CSS) -->
         <div class="scroll-down">
             <div class="mouse"><div class="wheel"></div></div>
             <div class="arrow"><span></span><span></span><span></span></div>
         </div>
     </section>
 
-    <!-- CHI SIAMO -->
+    <!-- SEZIONE CHI SIAMO + SIMULATORE HMI -->
     <section id="chi-siamo" class="section-padding">
         <div class="container">
             <div class="split-layout">
+                <!-- Testo Descrittivo -->
                 <div class="text-col">
                     <h2 class="section-title text-left-desk">Architettura <br><span class="text-stroke">Integrata</span></h2>
                     <p class="lead-text">
@@ -116,8 +131,10 @@
                     </div>
                 </div>
                 
+                <!-- Pannello di Controllo Simulato (HMI) -->
                 <div class="visual-col">
                     <div class="hmi-panel fade-init">
+                        <!-- Barra Superiore HMI -->
                         <div class="hmi-top-bar">
                             <div class="machine-id">LINE_PLC_01</div>
                             <div class="machine-status">
@@ -126,7 +143,9 @@
                             </div>
                             <div class="machine-mode">AUTO</div>
                         </div>
+                        <!-- Schermo HMI -->
                         <div class="hmi-screen">
+                            <!-- Modulo Motore -->
                             <div class="hmi-module">
                                 <div class="module-header">
                                     <span class="module-title">MAIN DRIVE</span>
@@ -146,6 +165,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Modulo Serbatoio -->
                             <div class="hmi-module">
                                 <div class="module-header">
                                     <span class="module-title">TANK V1</span>
@@ -171,6 +191,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Lista Allarmi HMI -->
                         <div class="hmi-alarms">
                             <div class="alarm-header">
                                 <span>TIME</span>
@@ -185,10 +206,11 @@
         </div>
     </section>
 
-    <!-- TECH STACK MARQUEE -->
+    <!-- BARRA MARCHI (MARQUEE) -->
     <section class="tech-marquee-section">
         <h3 class="marquee-title">Partner Tecnologici</h3>
         <div class="marquee-container">
+            <!-- Il contenuto è duplicato per l'effetto loop infinito CSS -->
             <div class="marquee-content">
                 <span>SIEMENS</span> <span>•</span>
                 <span>KNX</span> <span>•</span>
@@ -210,7 +232,7 @@
         </div>
     </section>
 
-    <!-- METODO -->
+    <!-- SEZIONE METODO (TIMELINE) -->
     <section id="metodo" class="section-padding bg-tech">
         <div class="container">
             <h2 class="section-title">Workflow <span class="text-teal">Operativo</span></h2>
@@ -235,11 +257,12 @@
         </div>
     </section>
 
-    <!-- SERVIZI -->
+    <!-- SEZIONE SERVIZI -->
     <section id="servizi" class="section-padding">
         <div class="container">
             <h2 class="section-title">Ecosistema <span class="text-stroke">Servizi</span></h2>
             <div class="services-grid-advanced">
+                <!-- Le card qui sotto si illuminano al centro su mobile (via JS) -->
                 <div class="service-card fade-init"><i class="fas fa-bolt service-icon"></i><h3>Impianti</h3><p>Industriale e Civile.</p><div class="card-border"></div></div>
                 <div class="service-card fade-init"><i class="fas fa-laptop-code service-icon"></i><h3>KNX</h3><p>Building Automation.</p><div class="card-border"></div></div>
                 <div class="service-card fade-init"><i class="fas fa-industry service-icon"></i><h3>PLC</h3><p>Siemens & Omron.</p><div class="card-border"></div></div>
@@ -250,22 +273,22 @@
         </div>
     </section>
 
-    <!-- PROGETTI -->
+    <!-- SEZIONE PROGETTI -->
     <section id="progetti" class="section-padding bg-tech">
         <div class="container">
             <h2 class="section-title">Portfolio <span class="text-teal">Lavori</span></h2>
             <div class="gallery-grid">
-                <!-- ID 1 -->
+                <!-- Card Progetto 1 -->
                 <div class="project-card fade-init" data-id="1">
                     <div class="project-img"><div class="img-placeholder p1"></div><div class="overlay-scan"></div></div>
                     <div class="project-info"><h4>Revamping</h4><span class="category">PLC Automation</span></div>
                 </div>
-                <!-- ID 2 -->
+                <!-- Card Progetto 2 -->
                 <div class="project-card fade-init" data-id="2">
                     <div class="project-img"><div class="img-placeholder p2"></div><div class="overlay-scan"></div></div>
                     <div class="project-info"><h4>Villa Smart</h4><span class="category">Domotica KNX</span></div>
                 </div>
-                <!-- ID 3 -->
+                <!-- Card Progetto 3 -->
                 <div class="project-card fade-init" data-id="3">
                     <div class="project-img"><div class="img-placeholder p3"></div><div class="overlay-scan"></div></div>
                     <div class="project-info"><h4>IOT Device</h4><span class="category">R&D PCB</span></div>
@@ -274,7 +297,7 @@
         </div>
     </section>
 
-    <!-- CONTATTI -->
+    <!-- SEZIONE CONTATTI -->
     <section id="contatti" class="section-padding">
         <div class="container">
             <h2 class="section-title">Contatta <span class="text-stroke">ElettricaMente</span></h2>
@@ -303,7 +326,7 @@
         </div>
     </footer>
 
-    <!-- MODAL (POPUP) -->
+    <!-- MODAL (Finestra Popup Progetti) -->
     <div id="project-modal" class="modal">
         <div class="modal-backdrop"></div>
         <div class="modal-content">
@@ -326,7 +349,7 @@
         </div>
     </div>
 
-    <!-- COOKIE BANNER (INSERITO CORRETTAMENTE PRIMA DELLO SCRIPT) -->
+    <!-- COOKIE BANNER (Obbligatorio inserirlo qui, PRIMA dello script) -->
     <div id="cookie-banner" class="cookie-banner">
         <div class="cookie-content">
             <i class="fas fa-shield-alt cookie-icon"></i>
@@ -340,7 +363,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT -->
+    <!-- CARICAMENTO SCRIPT -->
     <script src="assets/js/main.js"></script>
 </body>
 </html>
