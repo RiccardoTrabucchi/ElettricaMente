@@ -98,7 +98,17 @@ body.modal-open { overflow: hidden; }
 
 .btn { padding: 12px 30px; font-family: var(--font-tech); font-weight: 700; text-transform: uppercase; text-decoration: none; display: inline-block; transition: 0.3s; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); text-align: center; }
 .btn-primary { background: var(--primary-blue); color: #000; }
-.btn-outline { border: 1px solid var(--primary-blue); color: var(--primary-blue); margin-left: 15px; }
+.btn-outline { 
+    border: none;
+    box-shadow: inset 0 0 0 1px var(--primary-blue); 
+    color: var(--primary-blue); 
+    margin-left: 15px; 
+}
+/* Aggiungiamo anche questo per sicurezza sul pulsante pieno */
+.btn-primary {
+    border: none; /* Sicurezza */
+    /* ... il resto rimane uguale ... */
+}
 
 /* CUBE SYSTEM (Sync & Float) */
 .hero-visual-wrapper { 
