@@ -281,26 +281,28 @@
         </div>
     </section>
 
-    <!-- SEZIONE PROGETTI -->
+   <!-- SEZIONE PROGETTI -->
     <section id="progetti" class="section-padding bg-tech">
         <div class="container">
             <h2 class="section-title">Portfolio <span class="text-teal">Lavori</span></h2>
-            <div class="gallery-grid">
-                <!-- Card Progetto 1 -->
-                <div class="project-card fade-init" data-id="1">
-                    <div class="project-img"><div class="img-placeholder p1"></div><div class="overlay-scan"></div></div>
-                    <div class="project-info"><h4>Armadio elettrico</h4><span class="category">Distribuzione elettrica</span></div>
-                </div>
-                <!-- Card Progetto 2 -->
-                <div class="project-card fade-init" data-id="2">
-                    <div class="project-img"><div class="img-placeholder p2"></div><div class="overlay-scan"></div></div>
-                    <div class="project-info"><h4>Capannone domotico</h4><span class="category">Domotica KNX</span></div>
-                </div>
-                <!-- Card Progetto 3 -->
-                <div class="project-card fade-init" data-id="3">
-                    <div class="project-img"><div class="img-placeholder p3"></div><div class="overlay-scan"></div></div>
-                    <div class="project-info"><h4>PCB personalizzati per cilindri pneumatici</h4><span class="category">PCB</span></div>
-                </div>
+            
+            <!-- BARRA FILTRI -->
+            <div class="filter-bar fade-init">
+                <button class="filter-btn active" data-filter="all">Tutti</button>
+                <button class="filter-btn" data-filter="Distribuzione elettrica">Quadri</button>
+                <button class="filter-btn" data-filter="Domotica KNX">Domotica</button>
+                <button class="filter-btn" data-filter="Automazione PLC">Automazione</button>
+                <button class="filter-btn" data-filter="PCB">Elettronica</button>
+            </div>
+
+            <!-- GRID PROGETTI (Il contenuto viene generato da JS) -->
+            <div class="gallery-grid" id="projects-container">
+                <!-- I progetti verranno inseriti qui dal JavaScript -->
+            </div>
+
+            <!-- PULSANTE ESPANDI -->
+            <div class="cta-center fade-init" id="expand-container" style="margin-top: 40px; text-align: center;">
+                <button id="load-more-btn" class="btn btn-outline">Vedi Altri Progetti</button>
             </div>
         </div>
     </section>
@@ -375,3 +377,4 @@
     <script src="assets/js/main.js"></script>
 </body>
 </html>
+
