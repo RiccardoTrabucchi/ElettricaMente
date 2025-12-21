@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
             desc: "Integrazione KNX per la gestione delle luci di un intero capannone di un'azienda alimentare.", 
             specs: ["KNX", "Ilevia", "Controllo remoto"], 
             images: [
-                "assets/img/progetti/villa_1.jpg", 
+                "https://images.unsplash.com/photo-1558002038-1091a1661116?auto=format&fit=crop&w=800&q=80", 
                 "https://images.unsplash.com/photo-1558002038-1091a1661116?auto=format&fit=crop&w=800&q=80", 
                 "https://images.unsplash.com/photo-1560518883-ce09059ee971?auto=format&fit=crop&w=800&q=80"
             ] 
@@ -37,6 +37,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80", 
                 "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80", 
                 "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80"
+            ] 
+        },
+        { 
+            id: 4, 
+            title: "Automazione per forno", 
+            category: "Automazione", 
+            desc: "Automazione completa di quadro elettrico, PLC e HMI per la gestione di un forno a vapore. Sfruttando la potenza del PLC Schneider e la funzione PID si riescono a gestire varie ricette visualizzabili dal pannello HMI.", 
+            specs: ["PLC", "HMI", "Automazione"], 
+            images: [
+                "https://images.unsplash.com/photo-1558002038-1091a1661116?auto=format&fit=crop&w=800&q=80", 
+                "https://images.unsplash.com/photo-1558002038-1091a1661116?auto=format&fit=crop&w=800&q=80", 
+                "https://images.unsplash.com/photo-1560518883-ce09059ee971?auto=format&fit=crop&w=800&q=80"
             ] 
         }
     ];
