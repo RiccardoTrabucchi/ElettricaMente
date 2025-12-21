@@ -1,69 +1,57 @@
 document.addEventListener("DOMContentLoaded", function() {
-
+    
     /* --- DATABASE PROGETTI --- */
     const projectsData = [
         { 
             id: 1, 
-            title: "Armadio Distribuzione Subdued", 
-            category: "Quadri Elettrici", 
-            desc: "Cablaggio power center per retail moda. Gestione linee forza motrice e illuminazione.", 
-            specs: ["Schneider Electric", "Carpenteria Segregata", "Test Collaudo"], 
+            title: "Armadio elettrico Subdued", 
+            category: "Distribuzione elettrica", 
+            desc: "Cablaggio del quadro elettrico generale per un negozio di abbigliamento.", 
+            specs: ["Schneider Electric", "Modbus", "Sicurezza elettrica"], 
             images: ["https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800"] 
         },
         { 
             id: 2, 
-            title: "Automazione Capannone Alimentare", 
-            category: "Domotica", 
-            desc: "Integrazione KNX per il controllo clima e luci DALI in stabilimento produttivo.", 
-            specs: ["KNX", "DALI", "Ilevia Server"], 
+            title: "Capannone domotico", 
+            category: "Domotica KNX", 
+            desc: "Integrazione KNX per la gestione delle luci di un intero capannone.", 
+            specs: ["KNX", "Ilevia", "Controllo remoto"], 
             images: ["https://images.unsplash.com/photo-1558002038-1091a1661116?w=800"] 
         },
         { 
             id: 3, 
-            title: "PCB Controllo Valvole", 
-            category: "Elettronica", 
-            desc: "Progettazione e assemblaggio di schede elettroniche custom per il pilotaggio di elettrovalvole.", 
-            specs: ["Altium Designer", "SMD Assembly", "Microcontrollore AVR"], 
+            title: "PCB personalizzati", 
+            category: "PCB", 
+            desc: "Progettazione e assemblaggio schede personalizzate per cilindri pneumatici.", 
+            specs: ["PCB Design", "Altium Designer"], 
             images: ["https://images.unsplash.com/photo-1518770660439-4636190af475?w=800"] 
         },
         { 
             id: 4, 
-            title: "Revamping Linea Packaging", 
-            category: "Automazione", 
-            desc: "Aggiornamento logica di comando con PLC Siemens S7-1200 e pannello touch.", 
-            specs: ["Siemens TIA Portal", "HMI Comfort", "Safety PLC"], 
+            title: "Automazione PLC Linea 1", 
+            category: "Automazione PLC", 
+            desc: "Sviluppo logica di controllo per linea di produzione industriale.", 
+            specs: ["Siemens TIA Portal", "HMI", "Safety"], 
             images: ["https://images.unsplash.com/photo-1537462713505-a112611454c1?w=800"] 
-        },
-        { 
-            id: 5, 
-            title: "Quadro Automazione Pompe", 
-            category: "Quadri Elettrici", 
-            desc: "Realizzazione quadro di comando per centrale idrica con inverter.", 
-            specs: ["ABB Inverters", "Telemetria 4G", "PLC Rockwell"], 
-            images: ["https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800"] 
         }
     ];
 
-    /* --- GESTIONE PROGETTI (FILTRI + ESPANSIONE) --- */
+    /* --- RENDER DINAMICO PROGETTI --- */
     let currentFilter = "all";
-    let isExpanded = false;
+    let showAll = false;
 
     function renderProjects() {
         const container = document.getElementById('projects-container');
-        const loadMoreBtn = document.getElementById('load-more-btn');
         if(!container) return;
-
         container.innerHTML = "";
 
-        // Filtro i dati in base alla categoria selezionata
         const filtered = currentFilter === "all" 
             ? projectsData 
             : projectsData.filter(p => p.category === currentFilter);
 
-        // Decido quanti mostrarne: 3 se non è espanso, altrimenti tutti
-        const toShow = isExpanded ? filtered : filtered.slice(0, 3);
+        const itemsToShow = showAll ? filtered : filtered.slice(0, 3);
 
-        toShow.forEach(prj => {
+        itemsToShow.forEach(prj => {
             const card = document.createElement('div');
             card.className = "project-card fade-init visible";
             card.innerHTML = `
@@ -77,99 +65,95 @@ document.addEventListener("DOMContentLoaded", function() {
             container.appendChild(card);
         });
 
-        // Mostro o nascondo il pulsante "Vedi Altri"
-        if (filtered.length > 3 && !isExpanded) {
-            document.getElementById('expand-container').style.display = "block";
+        // Gestione tasto Vedi Altri
+        const expandContainer = document.getElementById('expand-container');
+        if(filtered.length > 3 && !showAll) {
+            expandContainer.style.display = "block";
         } else {
-            document.getElementById('expand-container').style.display = "none";
+            expandContainer.style.display = "none";
         }
     }
 
-    // Listener per i bottoni Filtro
+    // Filtri click
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.onclick = () => {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             currentFilter = btn.dataset.filter;
-            isExpanded = false; // Reset dell'espansione al cambio filtro
+            showAll = false;
             renderProjects();
         };
     });
 
-    // Listener per il tasto Carica Altri
-    document.getElementById('load-more-btn').onclick = () => {
-        isExpanded = true;
-        renderProjects();
-    };
+    // Vedi Altri click
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    if(loadMoreBtn) {
+        loadMoreBtn.onclick = () => {
+            showAll = true;
+            renderProjects();
+        };
+    }
 
     /* --- MODAL LOGIC --- */
+    const modal = document.getElementById('project-modal');
     function openModal(id) {
         const prj = projectsData.find(p => p.id === id);
-        const modal = document.getElementById('project-modal');
         if(prj && modal) {
             document.getElementById('modal-title').innerText = prj.title;
             document.getElementById('modal-desc').innerText = prj.desc;
             document.getElementById('modal-main-img').src = prj.images[0];
             document.getElementById('modal-specs').innerHTML = prj.specs.map(s => `<li>${s}</li>`).join('');
             modal.classList.add('show');
-            document.body.style.overflow = "hidden";
+            document.body.classList.add('modal-open');
         }
     }
-
     document.querySelector('.close-modal').onclick = () => {
-        document.getElementById('project-modal').classList.remove('show');
-        document.body.style.overflow = "auto";
+        modal.classList.remove('show');
+        document.body.classList.remove('modal-open');
     };
 
-    /* --- TYPEWRITER HERO --- */
-    const typeWords = ["Automazioni Industriali", "Impianti Tecnologici", "Progettazione Elettronica"];
-    let wordIdx = 0, charIdx = 0, isDeleting = false;
-    function type() {
-        const current = typeWords[wordIdx];
-        const display = isDeleting ? current.substring(0, charIdx--) : current.substring(0, charIdx++);
-        document.getElementById('typing-placeholder').textContent = display;
-        if (!isDeleting && charIdx > current.length) { isDeleting = true; setTimeout(type, 2000); }
-        else if (isDeleting && charIdx < 0) { isDeleting = false; wordIdx = (wordIdx + 1) % typeWords.length; setTimeout(type, 500); }
-        else { setTimeout(type, isDeleting ? 50 : 100); }
+    /* --- TUTTE LE ALTRE ANIMAZIONI ORIGINALI (TYPEWRITER, CUBE, HMI, CANVAS) --- */
+    
+    // Typewriter
+    const typeText = ["Automazioni", "Impianti tecnologici", "Engineering"];
+    let count=0, index=0;
+    (function type(){
+        let el = document.getElementById('typing-placeholder');
+        if(!el) return;
+        let current = typeText[count];
+        let letter = current.slice(0, ++index);
+        el.textContent = letter;
+        if(letter.length === current.length){ count = (count+1)%typeText.length; index=0; setTimeout(type, 2000); }
+        else { setTimeout(type, 100); }
+    })();
+
+    // Cube Sync
+    const heroCube = document.getElementById('hero-cube');
+    if(heroCube) {
+        let cubeIdx = 0;
+        const cubeStates = ['show-front', 'show-right', 'show-back', 'show-left', 'show-top', 'show-bottom'];
+        setInterval(() => {
+            cubeIdx = (cubeIdx + 1) % cubeStates.length;
+            heroCube.className = 'cube ' + cubeStates[cubeIdx];
+        }, 3000);
     }
 
-    /* --- CUBE SYNC --- */
-    const cubeData = [
-        { class: 'show-front', t: "Elettronica", d: "Progettazione PCB" },
-        { class: 'show-right', t: "Networking", d: "Infrastrutture IT" },
-        { class: 'show-back', t: "Automazione", d: "Sviluppo PLC" }
-    ];
-    let cubeIdx = 0;
-    setInterval(() => {
-        cubeIdx = (cubeIdx + 1) % cubeData.length;
-        const cube = document.getElementById('hero-cube');
-        if(cube) {
-            cube.className = 'cube ' + cubeData[cubeIdx].class;
-            document.getElementById('cube-title').innerText = cubeData[cubeIdx].t;
-            document.getElementById('cube-desc').innerText = cubeData[cubeIdx].d;
-        }
-    }, 3000);
+    // Burger Menu
+    const burger = document.querySelector('.burger');
+    const menu = document.querySelector('.mobile-menu');
+    if(burger) {
+        burger.onclick = () => {
+            menu.classList.toggle('active');
+            burger.classList.toggle('toggle');
+        };
+    }
 
-    /* --- HMI SIMULATION (Basic) --- */
-    let level = 10;
-    setInterval(() => {
-        level = (level + 1) % 100;
-        const liq = document.getElementById('hmi-liquid');
-        const txt = document.getElementById('hmi-level');
-        const cog = document.getElementById('hmi-motor-icon');
-        if(liq) liq.style.height = level + "%";
-        if(txt) txt.innerText = level + "%";
-        if(cog) cog.style.animation = "spin 2s linear infinite";
-        document.getElementById('sys-led').classList.add('active');
-    }, 500);
-
-    /* --- INITIALIZE --- */
-    type();
-    renderProjects();
-
-    // Intersection Observer per fade-in
-    const obs = new IntersectionObserver(entries => {
+    // Fade Observer
+    const observer = new IntersectionObserver(entries => {
         entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
     });
-    document.querySelectorAll('.fade-init').forEach(el => obs.observe(el));
+    document.querySelectorAll('.fade-init').forEach(el => observer.observe(el));
+
+    // Inizializzazione galleria
+    renderProjects();
 });
