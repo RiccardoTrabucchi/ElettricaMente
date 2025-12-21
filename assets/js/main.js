@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
             desc: "Cablaggio del quadro elettrico generale per un negozio di abbigliamento. Si occupa della distribuzione della linea elettrica a tutte le utenze.", 
             specs: ["Schneider Electric", "Modbus", "Sicurezza elettrica", "Monitoraggio dell'energia"], 
             images: [
-                "assets/img/progetti/industria_1.jpg", 
+                "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80", 
                 "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80", 
                 "https://images.unsplash.com/photo-1537462713505-a112611454c1?auto=format&fit=crop&w=800&q=80"
             ] 
@@ -34,9 +34,9 @@ document.addEventListener("DOMContentLoaded", function() {
             desc: "PCB personalizzato per dei cilindri pneumatici controllati da elettrovalvole. Progettato e assemblato da noi.", 
             specs: ["PCB", "Altium"], 
             images: [
-                "assets/img/progetti/pcb_1.jpg", 
+                "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80", 
                 "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80", 
-                "https://images.unsplash.com/photo-1555664424-778a69022365?auto=format&fit=crop&w=800&q=80"
+                "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80"
             ] 
         }
     ];
