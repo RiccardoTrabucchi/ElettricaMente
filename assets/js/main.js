@@ -1,365 +1,185 @@
-// Aspetta che tutto l'HTML sia caricato prima di eseguire
+/**
+ * ElettricaMente S.R.L. - Core JavaScript
+ * Gestione animazioni, Simulatore HMI e Portfolio Dinamico
+ */
+
 document.addEventListener("DOMContentLoaded", function() {
-    
-    /* --- DATABASE PROGETTI (Con 3 immagini per test) --- */
+
+    /* --- DATABASE PROGETTI --- */
+    // Qui puoi aggiungere infiniti progetti. 
+    // Ricordati di mettere i nomi corretti delle tue immagini nella cartella assets/img/
     const projectsData = [
         { 
             id: 1, 
-            title: "Armadio elettrico Subdued", 
-            category: "Distribuzione elettrica", 
-            desc: "Cablaggio del quadro elettrico generale per un negozio di abbigliamento. Si occupa della distribuzione della linea elettrica a tutte le utenze.", 
-            specs: ["Schneider Electric", "Modbus", "Sicurezza elettrica", "Monitoraggio dell'energia"], 
-            images: [
-                "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80", 
-                "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80", 
-                "https://images.unsplash.com/photo-1537462713505-a112611454c1?auto=format&fit=crop&w=800&q=80"
-            ] 
+            title: "Armadio Elettrico Industriale", 
+            category: "Elettrico", 
+            desc: "Progettazione e cablaggio di un quadro generale di distribuzione per stabilimento tessile.", 
+            specs: ["Potenza: 400kVA", "Componenti: Schneider", "Normativa: CEI EN 61439"], 
+            images: ["assets/img/progetto1_1.jpg", "assets/img/progetto1_2.jpg"] 
         },
         { 
             id: 2, 
-            title: "Capannone domotico", 
-            category: "Domotica", 
-            desc: "Integrazione KNX per la gestione delle luci di un intero capannone di un'azienda alimentare.", 
-            specs: ["KNX", "Ilevia", "Controllo remoto"], 
-            images: [
-                "https://images.unsplash.com/photo-1558002038-1091a1661116?auto=format&fit=crop&w=800&q=80", 
-                "https://images.unsplash.com/photo-1558002038-1091a1661116?auto=format&fit=crop&w=800&q=80", 
-                "https://images.unsplash.com/photo-1560518883-ce09059ee971?auto=format&fit=crop&w=800&q=80"
-            ] 
+            title: "Automazione Forno Vapore", 
+            category: "Automazione", 
+            desc: "Sistema di controllo basato su PLC con gestione PID per la regolazione precisa della temperatura.", 
+            specs: ["PLC: Schneider M241", "HMI: Magelis 7\"", "Protocollo: Modbus TCP"], 
+            images: ["assets/img/progetto2_1.jpg", "assets/img/progetto2_2.jpg"] 
         },
         { 
             id: 3, 
-            title: "PCB personalizzati per cilindri pneumatici", 
+            title: "PCB Controllo Pneumatico", 
             category: "PCB", 
-            desc: "PCB personalizzato per dei cilindri pneumatici controllati da elettrovalvole. Progettato e assemblato da noi.", 
-            specs: ["PCB", "Altium"], 
-            images: [
-                "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80", 
-                "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80", 
-                "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80"
-            ] 
+            desc: "Sviluppo scheda elettronica custom per l'interfacciamento di valvole pneumatiche ad alta velocità.", 
+            specs: ["Software: Altium", "Layer: 4", "MCU: STM32"], 
+            images: ["assets/img/progetto3_1.jpg", "assets/img/progetto3_2.jpg"] 
         },
         { 
             id: 4, 
-            title: "Automazione per forno", 
+            title: "Smart Building KNX", 
+            category: "Domotica", 
+            desc: "Integrazione completa di luci, termoregolazione e scenari per uffici direzionali.", 
+            specs: ["Standard: KNX", "Supervisione: Ilevia", "Dispositivi: Ekinex"], 
+            images: ["assets/img/progetto4_1.jpg", "assets/img/progetto4_2.jpg"] 
+        },
+        { 
+            id: 5, 
+            title: "Quadro Automazione PLC", 
             category: "Automazione", 
-            desc: "Automazione completa di quadro elettrico, PLC e HMI per la gestione di un forno a vapore. Sfruttando la potenza del PLC Schneider e la funzione PID si riescono a gestire varie ricette visualizzabili dal pannello HMI.", 
-            specs: ["PLC", "HMI", "Automazione"], 
-            images: [
-                "https://images.unsplash.com/photo-1558002038-1091a1661116?auto=format&fit=crop&w=800&q=80", 
-                "https://images.unsplash.com/photo-1558002038-1091a1661116?auto=format&fit=crop&w=800&q=80", 
-                "https://images.unsplash.com/photo-1560518883-ce09059ee971?auto=format&fit=crop&w=800&q=80"
-            ] 
+            desc: "Cablaggio bordo macchina per linea di produzione automatizzata.", 
+            specs: ["PLC: Siemens S7-1200", "Safety: Pilz", "IO-Link"], 
+            images: ["assets/img/progetto5_1.jpg"] 
         }
     ];
 
-    /* --- COOKIE MANAGER (Gestione Consenso) --- */
-    const cookieBanner = document.getElementById('cookie-banner');
-    const acceptBtn = document.getElementById('accept-cookies');
+    /* --- GESTIONE PORTFOLIO DINAMICO --- */
+    const projectsGrid = document.getElementById('projects-grid');
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    
+    let activeFilter = 'all';
+    let showAll = false;
+    const VISIBLE_LIMIT = 3; // Quanti progetti mostrare inizialmente
 
-    if (cookieBanner && acceptBtn) {
-        // Controlla se l'utente ha già accettato
-        const consent = localStorage.getItem('elettricamente_consent');
-        if (!consent) {
-            // Se no, mostra banner dopo 1 secondo
-            setTimeout(() => {
-                cookieBanner.classList.add('show');
-            }, 1000);
-        }
-        // Al click salva e chiudi
-        acceptBtn.onclick = () => {
-            localStorage.setItem('elettricamente_consent', 'true');
-            cookieBanner.classList.remove('show');
-        };
-    }
+    function renderProjects() {
+        if (!projectsGrid) return;
+        projectsGrid.innerHTML = '';
 
-    /* --- TYPEWRITER (Scrittura automatica Hero) --- */
-    const typeText = ["Impianti Elettrici civili e industriali", "Automazioni", "Impianti tecnologici"];
-    let count=0, index=0, currentText="", letter="";
-    (function type(){
-        let el = document.getElementById('typing-placeholder');
-        if(!el) return;
-        if(count===typeText.length)count=0; currentText=typeText[count]; letter=currentText.slice(0,++index);
-        el.textContent=letter;
-        if(letter.length===currentText.length){count++;index=0;setTimeout(type,2000);}else{setTimeout(type,100);}
-    })();
+        // Filtra i dati
+        const filtered = projectsData.filter(p => activeFilter === 'all' || p.category === activeFilter);
 
-    /* --- CUBE SYNC 2.0 (Logica Rotazione Sincronizzata) --- */
-    const cubeData = [
-        { class: 'show-front',  t: "Electronics",     d: "Progettazione PCB Custom" },
-        { class: 'show-right',  t: "Networking",      d: "Infrastrutture fibra ottica e rete cablata" },
-        { class: 'show-back',   t: "Automation",      d: "Sviluppo programmi PLC" },
-        { class: 'show-left',   t: "Prototyping",     d: "Modellazione e Stampa 3D" },
-        { class: 'show-top',    t: "Security",        d: "Sicurezza secondo gli standard CEI" },
-        { class: 'show-bottom', t: "Power Systems",   d: "Quadri di distribuzione e automazione" }
-    ];
-
-    const heroCube = document.getElementById('hero-cube');
-    const cubeTitle = document.getElementById('cube-title');
-    const cubeDesc = document.getElementById('cube-desc');
-    const progressFill = document.querySelector('.progress-fill');
-
-    if(heroCube && cubeTitle) {
-        let currentIndex = 0;
-        const intervalTime = 3000; 
-        let startTime = Date.now();
-
-        function updateCube() {
-            let elapsed = Date.now() - startTime;
-            let progress = (elapsed / intervalTime) * 100;
-
-            if (elapsed >= intervalTime) {
-                currentIndex = (currentIndex + 1) % cubeData.length;
-                startTime = Date.now();
-                progress = 0;
-                heroCube.className = `cube ${cubeData[currentIndex].class}`;
-                setTimeout(() => {
-                    cubeTitle.innerText = cubeData[currentIndex].t;
-                    cubeDesc.innerText = cubeData[currentIndex].d;
-                }, 200); 
-            }
-
-            if(progressFill) progressFill.style.width = `${progress}%`;
-            requestAnimationFrame(updateCube);
-        }
-        updateCube();
-    }
-
-    /* --- HMI SIMULATION (Allarmi Numerici & Animazione Gear) --- */
-    const sysLed = document.getElementById('sys-led');
-    const sysText = document.getElementById('sys-text');
-    const hmiMotorIcon = document.getElementById('hmi-motor-icon');
-    const motorLed = document.getElementById('motor-status-led');
-    const valveLed = document.getElementById('valve-status-led');
-    const hmiFreq = document.getElementById('hmi-freq');
-    const hmiCurr = document.getElementById('hmi-curr');
-    const hmiLevel = document.getElementById('hmi-level');
-    const hmiLiquid = document.getElementById('hmi-liquid');
-    const hmiValveText = document.getElementById('hmi-valve-text');
-    const hmiAlarms = document.getElementById('hmi-alarm-list');
-
-    if(sysLed && hmiLiquid) { 
-        let state = "FILL"; let level = 10; let freq = 0; let alarmActive = false;
-
-        function addLog(msg, type) {
-            if(!hmiAlarms) return;
-            const time = new Date().toLocaleTimeString('it-IT', { hour12: false });
-            const row = document.createElement('div');
-            row.classList.add('alarm-item');
-            let css = type === "ERR" ? "alarm-state-err" : (type === "INF" ? "alarm-state-inf" : "alarm-state-ok");
-            row.innerHTML = `<span>${time}</span><span>${msg}</span><span class="${css}">${type}</span>`;
-            hmiAlarms.prepend(row);
-            if(hmiAlarms.children.length > 4) hmiAlarms.removeChild(hmiAlarms.lastChild);
-        }
-
-        function automationCycle() {
-            if(alarmActive) return;
-
-            if (state === "FILL") {
-                sysText.innerText = "FILLING"; sysLed.className = "status-indicator active";
-                if(level === 10) { addLog("Valve V1 Open", "INF"); valveLed.classList.add('active'); hmiValveText.innerText = "OPN"; }
-                level += 1.5;
-                if (level >= 90) {
-                    state = "RUN"; addLog("Tank Full", "OK"); valveLed.classList.remove('active'); hmiValveText.innerText = "CLS";
-                }
-            } else if (state === "RUN") {
-                sysText.innerText = "RUNNING";
-                if(freq === 0) { addLog("Motor M1 On", "OK"); motorLed.classList.add('active'); }
-                if (freq < 50) freq += 1;
-                level -= 0.2;
-                if (Math.random() > 0.99) { triggerAlarm(); return; }
-                if (level <= 70) {
-                    state = "DRAIN"; addLog("Proc. Done", "OK"); motorLed.classList.remove('active');
-                }
-            } else if (state === "DRAIN") {
-                sysText.innerText = "DRAIN";
-                freq = Math.max(0, freq - 5);
-                if(level === 70) { addLog("Drain V1 Open", "INF"); valveLed.classList.add('active'); hmiValveText.innerText = "OPN"; }
-                level -= 2;
-                if (level <= 10) {
-                    state = "FILL"; addLog("Cycle End", "OK"); valveLed.classList.remove('active'); hmiValveText.innerText = "CLS";
-                }
-            }
-
-            hmiLevel.innerText = Math.round(level) + "%"; hmiLiquid.style.height = level + "%";
-            hmiFreq.innerText = freq.toFixed(1);
-            let amps = freq > 0 ? (freq * 0.24) + (Math.random() * 0.5) : 0;
-            hmiCurr.innerText = amps.toFixed(1);
-
-            if (freq > 0) {
-                let duration = 2000 - (freq * 30);
-                hmiMotorIcon.style.animation = `spin ${duration}ms linear infinite`;
-                hmiMotorIcon.style.color = "#00ffaa";
-            } else {
-                hmiMotorIcon.style.animation = "none"; 
-                hmiMotorIcon.style.color = "#555";
-            }
-        }
-
-        function triggerAlarm() {
-            alarmActive = true;
-            sysText.innerText = "ALARM"; sysLed.className = "status-indicator alarm";
-            hmiCurr.classList.add('text-alarm'); 
-            hmiCurr.innerText = "28.5 A"; // Mostra Valore invece di ERR
-            addLog("OVRLOAD M1", "ERR");
-            motorLed.classList.remove('active'); motorLed.classList.add('alarm');
-            setTimeout(() => {
-                alarmActive = false; sysLed.className = "status-indicator active";
-                hmiCurr.classList.remove('text-alarm'); motorLed.classList.remove('alarm');
-                addLog("Reset OK", "INF"); state = "FILL"; level = 10; freq = 0;
-            }, 4000);
-        }
-        setInterval(automationCycle, 150);
-    }
-
-    /* --- MOBILE MENU ANIMATION --- */
-    const burger = document.querySelector('.burger');
-    const mobileMenu = document.querySelector('.mobile-menu');
-
-    if(burger && mobileMenu) {
-        burger.onclick = () => {
-            mobileMenu.classList.toggle('active');
-            burger.classList.toggle('toggle'); 
-        };
-        document.querySelectorAll('.mobile-link').forEach(l => {
-            l.onclick = () => {
-                mobileMenu.classList.remove('active');
-                burger.classList.remove('toggle');
-            };
-        });
-    }
-
-    /* --- SERVICE FOCUS OBSERVER (SOLO MOBILE) --- */
-    // Attiva illuminazione card al centro dello schermo
-    if (window.innerWidth <= 992) {
-        const serviceObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('highlight-active');
-                } else {
-                    entry.target.classList.remove('highlight-active');
-                }
-            });
-        }, {
-            root: null,
-            rootMargin: '-45% 0px -45% 0px', // Triggera solo al centro esatto
-            threshold: 0
+        filtered.forEach((prj, index) => {
+            const isHidden = (!showAll && index >= VISIBLE_LIMIT) ? 'hidden' : '';
+            
+            const card = document.createElement('div');
+            card.className = `project-card ${isHidden}`;
+            card.innerHTML = `
+                <div class="project-img">
+                    <div class="img-placeholder" style="background-image: url('${prj.images[0]}')"></div>
+                </div>
+                <div class="project-info">
+                    <span class="category">${prj.category}</span>
+                    <h4>${prj.title}</h4>
+                </div>
+            `;
+            
+            card.onclick = () => openModal(prj.id);
+            projectsGrid.appendChild(card);
         });
 
-        document.querySelectorAll('.service-card').forEach(card => {
-            serviceObserver.observe(card);
+        // Gestione visibilità tasto "Mostra Altri"
+        if (filtered.length <= VISIBLE_LIMIT || showAll) {
+            loadMoreBtn.parentElement.style.display = 'none';
+        } else {
+            loadMoreBtn.parentElement.style.display = 'block';
+        }
+    }
+
+    // Listener Filtri
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeFilter = btn.dataset.filter;
+            showAll = false; // Reset visualizzazione
+            renderProjects();
         });
-    }
+    });
 
-    /* --- PARTICLES CANVAS --- */
-    const canvas = document.getElementById('circuit-canvas');
-    if(canvas) {
-        const ctx = canvas.getContext('2d');
-        let w, h, p = [];
-        
-        function resize(){ 
-            w=canvas.width=window.innerWidth; 
-            h=canvas.height=window.innerHeight; 
-        }
-        
-        function init(){ 
-            p=[]; 
-            let count = window.innerWidth < 768 ? 20 : 50; 
-            for(let i=0;i<count;i++) p.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5),vy:(Math.random()-.5)}); 
-        }
-        
-        function draw(){
-            ctx.clearRect(0,0,w,h);
-            p.forEach(pt=>{
-                pt.x+=pt.vx; pt.y+=pt.vy;
-                if(pt.x<0||pt.x>w)pt.vx*=-1; if(pt.y<0||pt.y>h)pt.vy*=-1;
-                ctx.beginPath(); ctx.arc(pt.x,pt.y,1.5,0,Math.PI*2); ctx.fillStyle="rgba(0,242,255,0.4)"; ctx.fill();
-            });
-            let connDist = window.innerWidth < 768 ? 60 : 120;
-            for(let i=0;i<p.length;i++)for(let j=i+1;j<p.length;j++){
-                let d=Math.hypot(p[i].x-p[j].x, p[i].y-p[j].y);
-                if(d<connDist){ ctx.beginPath(); ctx.moveTo(p[i].x,p[i].y); ctx.lineTo(p[j].x,p[j].y); ctx.strokeStyle=`rgba(0,242,255,${1-d/connDist})`; ctx.stroke(); }
-            }
-            requestAnimationFrame(draw);
-        }
-        window.addEventListener('resize',()=>{resize();init();}); resize(); init(); draw();
-    }
+    // Listener Load More
+    loadMoreBtn.onclick = () => {
+        showAll = true;
+        renderProjects();
+    };
 
-    /* --- MODAL LOGIC (Fix Scroll & Gallery) --- */
+    /* --- MODAL LOGIC --- */
     const modal = document.getElementById('project-modal');
-    const modalMainImg = document.getElementById('modal-main-img');
-
-    function setImage(imgElement, src) {
-        let img = new Image();
-        img.onload = () => { imgElement.src = src; };
-        img.onerror = () => { 
-            // Fallback se immagine non trovata
-            imgElement.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22600%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20600%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1%20text%20%7B%20fill%3A%2300f2ff%3Bfont-weight%3Abold%3Bfont-family%3Amonospace%3Bfont-size%3A24pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1%22%3E%3Crect%20width%3D%22800%22%20height%3D%22600%22%20fill%3D%22%23111%22%3E%3C%2Frect%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20alignment-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%3ENO IMG%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fsvg%3E';
-        };
-        img.src = src;
-    }
-
+    
     function openModal(id) {
-        let prj = projectsData.find(p => p.id === id);
-        if(prj && modal){
-            document.getElementById('modal-title').innerText = prj.title;
-            document.getElementById('modal-desc').innerText = prj.desc;
-            document.getElementById('modal-tags').innerHTML = `<span class="tag">${prj.category}</span>`;
-            document.getElementById('modal-specs').innerHTML = prj.specs.map(s => `<li>${s}</li>`).join('');
-            
-            if(prj.images && prj.images.length > 0) {
-                setImage(modalMainImg, prj.images[0]);
-                const thumbsContainer = document.getElementById('modal-thumbnails');
-                thumbsContainer.innerHTML = '';
-                prj.images.forEach((src, idx) => {
-                    let thumb = document.createElement('img');
-                    thumb.classList.add('thumb');
-                    if(idx===0) thumb.classList.add('active');
-                    setImage(thumb, src);
-                    thumb.onclick = () => {
-                        setImage(modalMainImg, src);
-                        document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
-                        thumb.classList.add('active');
-                    };
-                    thumbsContainer.appendChild(thumb);
-                });
-            }
-            
-            modal.classList.add('show');
-            document.body.classList.add('modal-open');
-        }
-    }
+        const prj = projectsData.find(p => p.id === id);
+        if(!prj) return;
 
-    function closeModalFunction() {
-        if(modal) {
-            modal.classList.remove('show');
-            setTimeout(() => {
-                document.body.classList.remove('modal-open');
-            }, 300);
-        }
-    }
+        document.getElementById('modal-title').innerText = prj.title;
+        document.getElementById('modal-desc').innerText = prj.desc;
+        document.getElementById('modal-tags').innerHTML = `<span class="tag">${prj.category}</span>`;
+        document.getElementById('modal-specs').innerHTML = prj.specs.map(s => `<li>${s}</li>`).join('');
+        
+        const mainImg = document.getElementById('modal-main-img');
+        mainImg.src = prj.images[0];
 
-    document.querySelectorAll('.project-card').forEach(c => {
-        c.onclick = (e) => {
-            e.preventDefault(); 
-            openModal(parseInt(c.dataset.id));
-        };
-    });
-
-    const closeModalBtn = document.querySelector('.close-modal');
-    if(closeModalBtn) closeModalBtn.onclick = closeModalFunction;
-    const modalBackdrop = document.querySelector('.modal-backdrop');
-    if(modalBackdrop) modalBackdrop.onclick = closeModalFunction;
-
-    /* --- FADE IN --- */
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => { 
-            if(entry.isIntersecting) entry.target.classList.add('visible'); 
+        const thumbContainer = document.getElementById('modal-thumbnails');
+        thumbContainer.innerHTML = '';
+        prj.images.forEach(imgSrc => {
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.className = 'thumb';
+            img.onclick = () => mainImg.src = imgSrc;
+            thumbContainer.appendChild(img);
         });
-    }, { threshold: 0.1 });
 
-    document.querySelectorAll('.fade-init').forEach(el => {
-        observer.observe(el);
-    });
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
 
+    document.querySelector('.close-modal').onclick = () => {
+        modal.classList.remove('show');
+        document.body.style.overflow = 'auto';
+    };
+
+    /* --- ANIMAZIONE TYPEWRITER --- */
+    const typeText = ["Automazione Industriale", "Sistemi KNX", "Progettazione PCB", "Quadri Elettrici"];
+    let charIdx = 0, textIdx = 0;
+    function type() {
+        const target = document.getElementById('typing-placeholder');
+        if(!target) return;
+        const current = typeText[textIdx];
+        target.innerText = current.substring(0, charIdx++);
+        if(charIdx > current.length) {
+            charIdx = 0; textIdx = (textIdx + 1) % typeText.length;
+            setTimeout(type, 2000);
+        } else {
+            setTimeout(type, 100);
+        }
+    }
+
+    /* --- CUBE CONTROL --- */
+    const cube = document.getElementById('hero-cube');
+    const cubeStates = ['show-front', 'show-right', 'show-back', 'show-left', 'show-top', 'show-bottom'];
+    let cubeIdx = 0;
+    setInterval(() => {
+        if(!cube) return;
+        cube.className = 'cube ' + cubeStates[cubeIdx];
+        cubeIdx = (cubeIdx + 1) % cubeStates.length;
+    }, 3000);
+
+    /* --- MOBILE MENU --- */
+    const burger = document.querySelector('.burger');
+    const nav = document.querySelector('.mobile-menu');
+    burger.onclick = () => {
+        nav.classList.toggle('active');
+        burger.classList.toggle('toggle');
+    };
+
+    // Inizializzazione Generale
+    renderProjects();
+    type();
 });
