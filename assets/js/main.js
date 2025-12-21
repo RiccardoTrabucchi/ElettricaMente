@@ -1,189 +1,130 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-    /* --- DATABASE PROGETTI (JSON-like) --- 
-       Qui puoi aggiungere tutti i progetti che vuoi.
-       Il sistema gestirà automaticamente filtri e tasto "Vedi Altri".
-    */
-    const PROJECTS_DATABASE = [
-        { 
-            id: 1, title: "Quadro Subdued", category: "Distribuzione", 
-            desc: "Cablaggio power center per retail moda.", 
-            specs: ["Schneider", "Monitoraggio Energia"], 
-            img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800" 
-        },
-        { 
-            id: 2, title: "Stabilimento Alimentare", category: "Domotica", 
-            desc: "Integrazione KNX per luci e clima industriale.", 
-            specs: ["KNX", "DALI"], 
-            img: "https://images.unsplash.com/photo-1558002038-1091a1661116?w=800" 
-        },
-        { 
-            id: 3, title: "PCB Cilindri Pneumatici", category: "PCB", 
-            desc: "Design elettronico custom per controllo elettrovalvole.", 
-            specs: ["Altium", "Assemblaggio SMD"], 
-            img: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800" 
-        },
-        { 
-            id: 4, title: "Automazione PLC Linea 1", category: "Distribuzione", 
-            desc: "Revamping logica di comando con Siemens S7-1200.", 
-            specs: ["Siemens TIA Portal", "HMI Comfort"], 
-            img: "https://images.unsplash.com/photo-1537462713505-a112611454c1?w=800" 
-        },
-        { 
-            id: 5, title: "Domotica Residenziale", category: "Domotica", 
-            desc: "Villa intelligente con gestione remota completa.", 
-            specs: ["KNX", "Control4"], 
-            img: "https://images.unsplash.com/photo-1560518883-ce09059ee971?w=800" 
-        }
+    // --- DATABASE PROGETTI AGGIUNTIVI ---
+    const extraProjects = [
+        { id: 4, title: "Quadro Pompe", category: "Distribuzione", desc: "Automazione pompe industriali.", img: "https://picsum.photos/id/4/800/600" },
+        { id: 5, title: "Villa Domotica", category: "Domotica", desc: "Gestione KNX residenziale.", img: "https://picsum.photos/id/5/800/600" },
+        { id: 6, title: "PCB Controllo", category: "PCB", desc: "Scheda elettronica personalizzata.", img: "https://picsum.photos/id/6/800/600" }
     ];
 
-    /* --- LOGICA RENDERING PROGETTI --- */
-    let currentFilter = "all";
-    let showAll = false;
+    // --- LOGICA ESPANSIONE E FILTRI ---
+    const gallery = document.getElementById('main-gallery');
+    const loadBtn = document.getElementById('load-more-btn');
+    let expanded = false;
 
-    function renderProjects() {
-        const grid = document.getElementById('projects-grid');
-        const loadMoreBtn = document.getElementById('load-more-container');
-        if(!grid) return;
-
-        grid.innerHTML = "";
-
-        // Filtro
-        const filtered = currentFilter === "all" 
-            ? PROJECTS_DATABASE 
-            : PROJECTS_DATABASE.filter(p => p.category === currentFilter);
-
-        // Limite visibilità (mostra 3 se non espanso)
-        const toDisplay = showAll ? filtered : filtered.slice(0, 3);
-
-        toDisplay.forEach(prj => {
+    function renderExtra() {
+        if(expanded) return;
+        extraProjects.forEach(p => {
             const card = document.createElement('div');
-            card.className = "project-card fade-init visible";
-            card.setAttribute('data-id', prj.id);
-            // Lazy Loading integrato e Alt tag per SEO
+            card.className = "project-card fade-init visible"; // Appare subito
+            card.setAttribute('data-category', p.category);
+            card.setAttribute('data-id', p.id);
             card.innerHTML = `
-                <div class="project-img">
-                    <img src="${prj.img}" alt="${prj.title} - ElettricaMente" loading="lazy">
-                    <div class="overlay-scan"></div>
-                </div>
-                <div class="project-info">
-                    <h4>${prj.title}</h4>
-                    <span class="category">${prj.category}</span>
-                </div>
+                <div class="project-img" style="background-image:url('${p.img}'); background-size:cover;"></div>
+                <div class="project-info"><h4>${p.title}</h4><span class="category">${p.category}</span></div>
             `;
-            card.onclick = () => openModal(prj.id);
-            grid.appendChild(card);
+            card.onclick = () => openModal(p.id);
+            gallery.appendChild(card);
         });
-
-        // Mostra/Nascondi tasto Carica Altri
-        if (filtered.length > 3 && !showAll) {
-            loadMoreBtn.style.display = "block";
-        } else {
-            loadMoreBtn.style.display = "none";
-        }
+        expanded = true;
+        loadBtn.style.display = "none";
     }
 
-    // Filtri click
+    if(loadBtn) loadBtn.onclick = renderExtra;
+
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.onclick = () => {
+            const filter = btn.dataset.filter;
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            currentFilter = btn.dataset.filter;
-            showAll = false;
-            renderProjects();
+            
+            document.querySelectorAll('.project-card').forEach(card => {
+                const cat = card.dataset.category;
+                if(filter === "all" || cat === filter) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
         };
     });
 
-    // Load More click
-    const btnLoad = document.getElementById('load-more-btn');
-    if(btnLoad) btnLoad.onclick = () => { showAll = true; renderProjects(); };
-
-    /* --- MODAL LOGIC --- */
-    const modal = document.getElementById('project-modal');
-    function openModal(id) {
-        const prj = PROJECTS_DATABASE.find(p => p.id === id);
-        if(prj && modal) {
-            document.getElementById('modal-title').innerText = prj.title;
-            document.getElementById('modal-desc').innerText = prj.desc;
-            document.getElementById('modal-main-img').src = prj.img;
-            document.getElementById('modal-specs').innerHTML = prj.specs.map(s => `<li>${s}</li>`).join('');
-            modal.style.display = "flex";
-            document.body.classList.add('modal-open');
-        }
+    // --- ANIMAZIONE TYPEWRITER ORIGINALE ---
+    const typeStrings = ["Impianti Elettrici", "Automazioni", "Tecnologie KNX"];
+    let wordI = 0, charI = 0, isDeleting = false;
+    function typeEffect() {
+        const current = typeStrings[wordI];
+        const el = document.getElementById('typing-placeholder');
+        if(!el) return;
+        el.textContent = isDeleting ? current.substring(0, charI--) : current.substring(0, charI++);
+        if(!isDeleting && charI > current.length) { isDeleting = true; setTimeout(typeEffect, 2000); }
+        else if(isDeleting && charI < 0) { isDeleting = false; wordI = (wordI + 1) % typeStrings.length; setTimeout(typeEffect, 500); }
+        else { setTimeout(typeEffect, isDeleting ? 50 : 100); }
     }
-    document.querySelector('.close-modal').onclick = () => {
-        modal.style.display = "none";
-        document.body.classList.remove('modal-open');
-    };
+    typeEffect();
 
-    /* --- ANIMAZIONI ORIGINALI (Typewriter, Cube, HMI) --- */
-    
-    // Typewriter
-    const typeStrings = ["Automazione PLC", "Impianti KNX", "Engineering Elettronico"];
-    let wordIdx = 0, charIdx = 0, isDel = false;
-    (function type() {
-        const curr = typeStrings[wordIdx];
-        const disp = isDel ? curr.substring(0, charIdx--) : curr.substring(0, charIdx++);
-        document.getElementById('typing-placeholder').textContent = disp;
-        if(!isDel && charIdx > curr.length) { isDel = true; setTimeout(type, 2000); }
-        else if(isDel && charIdx < 0) { isDel = false; wordIdx = (wordIdx + 1) % typeStrings.length; setTimeout(type, 500); }
-        else { setTimeout(type, isDel ? 50 : 100); }
-    })();
-
-    // Cube
-    const cubeStates = ['show-front', 'show-right', 'show-back', 'show-left', 'show-top', 'show-bottom'];
-    let cubeI = 0;
+    // --- ANIMAZIONE CUBO ORIGINALE ---
+    const cube = document.getElementById('hero-cube');
+    const states = ['show-front', 'show-right', 'show-back', 'show-left', 'show-top', 'show-bottom'];
+    const bar = document.querySelector('.progress-fill');
+    let sI = 0;
     setInterval(() => {
-        cubeI = (cubeI + 1) % cubeStates.length;
-        const c = document.getElementById('hero-cube');
-        if(c) c.className = 'cube ' + cubeStates[cubeI];
+        sI = (sI + 1) % states.length;
+        if(cube) cube.className = 'cube ' + states[sI];
     }, 3000);
+    // Barra progresso finta
+    let prog = 0; setInterval(() => { prog = (prog + 1) % 100; if(bar) bar.style.width = prog + "%"; }, 30);
 
-    // HMI Simulation
+    // --- SIMULAZIONE HMI ORIGINALE ---
     let level = 10;
     setInterval(() => {
         level = (level + 1) % 100;
         const liq = document.getElementById('hmi-liquid');
         if(liq) liq.style.height = level + "%";
-        document.getElementById('hmi-level').innerText = level + "%";
-        document.getElementById('sys-led').classList.add('active');
-        document.getElementById('hmi-motor-icon').style.animation = "spin 2s linear infinite";
+        if(document.getElementById('hmi-level')) document.getElementById('hmi-level').innerText = level + "%";
+        const cog = document.getElementById('hmi-motor-icon');
+        if(cog) cog.style.animation = "spin 2s linear infinite";
+        if(document.getElementById('sys-led')) document.getElementById('sys-led').classList.add('active');
     }, 500);
 
-    // Burger Menu
-    const burger = document.querySelector('.burger');
-    if(burger) {
-        burger.onclick = () => {
-            document.querySelector('.mobile-menu').classList.toggle('active');
-            burger.classList.toggle('toggle');
-        };
-    }
-
-    /* --- CANVAS BACKGROUND --- */
+    // --- CANVAS ORIGINALE ---
     const canvas = document.getElementById('circuit-canvas');
     if(canvas) {
         const ctx = canvas.getContext('2d');
-        let w = canvas.width = window.innerWidth, h = canvas.height = window.innerHeight;
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
         function draw() {
             ctx.clearRect(0,0,w,h);
-            ctx.fillStyle = "rgba(0, 242, 255, 0.05)";
-            for(let i=0; i<30; i++) ctx.fillRect(Math.random()*w, Math.random()*h, 2, 2);
+            ctx.fillStyle = "rgba(0, 242, 255, 0.1)";
+            for(let i=0; i<40; i++) ctx.fillRect(Math.random()*w, Math.random()*h, 2, 2);
             requestAnimationFrame(draw);
         }
         draw();
     }
 
-    // Initialize Projects
-    renderProjects();
+    // --- MENU MOBILE ---
+    const burger = document.querySelector('.burger');
+    const menu = document.querySelector('.mobile-menu');
+    if(burger) {
+        burger.onclick = () => {
+            menu.classList.toggle('active');
+            burger.classList.toggle('toggle');
+        };
+    }
 
-    // Fade Observer
+    // --- MODAL ---
+    function openModal(id) {
+        const modal = document.getElementById('project-modal');
+        document.getElementById('modal-title').innerText = "Progetto " + id;
+        document.getElementById('modal-main-img').src = "https://picsum.photos/seed/"+id+"/800/600";
+        modal.classList.add('show');
+    }
+    document.querySelectorAll('.project-card').forEach(c => c.onclick = () => openModal(c.dataset.id));
+    document.querySelector('.close-modal').onclick = () => document.getElementById('project-modal').classList.remove('show');
+
+    // --- FADE OBSERVER ---
     const obs = new IntersectionObserver(entries => {
         entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
+    });
     document.querySelectorAll('.fade-init').forEach(el => obs.observe(el));
-
-    // Cookie Accept
-    document.getElementById('accept-cookies').onclick = () => {
-        document.getElementById('cookie-banner').style.display = "none";
-    };
 });
