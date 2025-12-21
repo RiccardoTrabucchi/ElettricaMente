@@ -1,12 +1,172 @@
-<!-- ... Resto del codice identico (Hero, Chi Siamo, Metodo, Servizi) ... -->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ElettricaMente S.R.L.</title>
+    <meta name="description" content="Impianti elettrici civili e industriali, automazioni, impianti tecnologici">
+    
+    <!-- Fonts Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Icone FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Foglio di stile principale -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
 
-    <!-- SEZIONE PROGETTI (SISTEMATA) -->
+    <!-- Sfondo animato (Gestito da JS) -->
+    <canvas id="circuit-canvas"></canvas>
+    <div class="vignette-overlay"></div>
+
+    <!-- NAVBAR FISSA -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo-wrapper">
+                <img src="assets/img/logo.png" alt="ElettricaMente Logo" class="logo-img">
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#chi-siamo">Visione</a></li>
+                <li><a href="#metodo">Metodo</a></li>
+                <li><a href="#servizi">Tecnologie</a></li>
+                <li><a href="#progetti">Portfolio</a></li>
+                <li><a href="#contatti">Contatti</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div><div class="line2"></div><div class="line3"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MENU MOBILE -->
+    <div class="mobile-menu">
+        <a href="#home" class="mobile-link">Home</a>
+        <a href="#chi-siamo" class="mobile-link">Visione</a>
+        <a href="#metodo" class="mobile-link">Metodo</a>
+        <a href="#servizi" class="mobile-link">Servizi</a>
+        <a href="#progetti" class="mobile-link">Portfolio</a>
+        <a href="#contatti" class="mobile-link">Contatti</a>
+    </div>
+
+    <!-- SEZIONE HERO -->
+    <section id="home" class="hero">
+        <div class="container hero-layout">
+            <div class="hero-content">
+                <div class="tech-badge">System Integrator</div>
+                <h1 class="glitch-title">ELETTRICA<span class="text-teal">MENTE</span></h1>
+                <h2 class="typing-text" id="typing-placeholder"></h2>
+                <p class="hero-subtitle">Dominiamo l'energia in ogni sua forma: dalla precisione elettronica alla potenza delle cabine di media tensione.</p>
+                <div class="cta-group">
+                    <a href="#progetti" class="btn btn-primary">I Nostri Lavori</a>
+                    <a href="#contatti" class="btn btn-outline">Contattaci</a>
+                </div>
+            </div>
+            
+            <div class="hero-visual-wrapper">
+                <div class="cube-container">
+                    <div class="cube" id="hero-cube">
+                        <div class="face front"><i class="fas fa-microchip"></i></div>
+                        <div class="face right"><i class="fas fa-network-wired"></i></div>
+                        <div class="face back"><i class="fas fa-cogs"></i></div>
+                        <div class="face left"><i class="fas fa-cube"></i></div>
+                        <div class="face top"><i class="fas fa-shield-alt"></i></div>
+                        <div class="face bottom"><i class="fas fa-bolt"></i></div>
+                    </div>
+                </div>
+                <div class="cube-caption">
+                    <h4 id="cube-title">Electronics</h4>
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                    <p id="cube-desc">Progettazione PCB custom</p>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-down">
+            <div class="mouse"><div class="wheel"></div></div>
+        </div>
+    </section>
+
+    <!-- CHI SIAMO + HMI -->
+    <section id="chi-siamo" class="section-padding">
+        <div class="container">
+            <div class="split-layout">
+                <div class="text-col">
+                    <h2 class="section-title text-left-desk">Architettura <br><span class="text-stroke">Integrata</span></h2>
+                    <p class="lead-text">Colleghiamo il pensiero (Software) all'azione (Hardware).</p>
+                    <p class="body-text">ElettricaMente S.R.L. unisce l'esperienza nell'impiantistica tradizionale alla visione dell'ingegneria moderna.</p>
+                    <div class="cert-badges">
+                        <div class="badge-item"><i class="fas fa-check"></i> KNX Partner</div>
+                        <div class="badge-item"><i class="fas fa-check"></i> Inim Authorized</div>
+                    </div>
+                </div>
+                <div class="visual-col">
+                    <div class="hmi-panel fade-init">
+                        <div class="hmi-top-bar">
+                            <div class="machine-id">LINE_PLC_01</div>
+                            <div class="machine-status"><span class="status-indicator" id="sys-led"></span> <span id="sys-text">READY</span></div>
+                            <div class="machine-mode">AUTO</div>
+                        </div>
+                        <div class="hmi-screen">
+                            <div class="hmi-module">
+                                <span class="module-title">MAIN DRIVE</span>
+                                <div class="motor-graphic"><i class="fas fa-cog" id="hmi-motor-icon"></i></div>
+                                <div class="data-row"><span>FREQ:</span><span class="data-val" id="hmi-freq">0.0 Hz</span></div>
+                            </div>
+                            <div class="hmi-module">
+                                <span class="module-title">TANK V1</span>
+                                <div class="tank-graphic"><div class="tank-liquid" id="hmi-liquid"></div></div>
+                                <div class="data-row"><span>LVL:</span><span class="data-val" id="hmi-level">0 %</span></div>
+                            </div>
+                        </div>
+                        <div class="hmi-alarms"><div class="alarm-list" id="hmi-alarm-list"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BARRA MARCHI -->
+    <section class="tech-marquee-section">
+        <div class="marquee-container">
+            <div class="marquee-content">
+                <span>SCHNEIDER ELECTRIC</span> <span>•</span> <span>KNX</span> <span>•</span> <span>SIEMENS</span> <span>•</span> <span>ALTIUM</span> <span>•</span> <span>ABB</span> <span>•</span> <span>SOLIDWORKS</span> <span>•</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- METODO -->
+    <section id="metodo" class="section-padding bg-tech">
+        <div class="container">
+            <h2 class="section-title">Workflow <span class="text-teal">Operativo</span></h2>
+            <div class="timeline">
+                <div class="timeline-item fade-init"><div class="timeline-icon"><i class="fas fa-search"></i></div><h3>Analisi</h3></div>
+                <div class="timeline-item fade-init"><div class="timeline-icon"><i class="fas fa-pencil-ruler"></i></div><h3>Progetto</h3></div>
+                <div class="timeline-item fade-init"><div class="timeline-icon"><i class="fas fa-tools"></i></div><h3>Esecuzione</h3></div>
+                <div class="timeline-item fade-init"><div class="timeline-icon"><i class="fas fa-handshake"></i></div><h3>Service</h3></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVIZI -->
+    <section id="servizi" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Ecosistema <span class="text-stroke">Servizi</span></h2>
+            <div class="services-grid-advanced">
+                <div class="service-card fade-init"><i class="fas fa-bolt service-icon"></i><h3>Impianti</h3><div class="card-border"></div></div>
+                <div class="service-card fade-init"><i class="fas fa-laptop-code service-icon"></i><h3>KNX</h3><div class="card-border"></div></div>
+                <div class="service-card fade-init"><i class="fas fa-industry service-icon"></i><h3>PLC</h3><div class="card-border"></div></div>
+                <div class="service-card fade-init"><i class="fas fa-microchip service-icon"></i><h3>PCB</h3><div class="card-border"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEZIONE PROGETTI (DINAMICA) -->
     <section id="progetti" class="section-padding bg-tech">
         <div class="container">
             <h2 class="section-title">Portfolio <span class="text-teal">Lavori</span></h2>
             
-            <!-- FILTRI AGGIUNTI -->
-            <div class="filter-container">
+            <!-- Filtri per tag -->
+            <div class="filter-container fade-init">
                 <button class="filter-btn active" data-filter="all">Tutti</button>
                 <button class="filter-btn" data-filter="Automazione">Automazione</button>
                 <button class="filter-btn" data-filter="PCB">PCB</button>
@@ -14,16 +174,56 @@
                 <button class="filter-btn" data-filter="Elettrico">Elettrico</button>
             </div>
 
-            <!-- Griglia Progetti (Verrà popolata dal JS per evitare errori) -->
-            <div class="gallery-grid" id="projects-grid">
-                <!-- Qui il JS inserirà i progetti -->
-            </div>
+            <!-- Griglia dei progetti -->
+            <div class="gallery-grid" id="projects-grid"></div>
 
-            <!-- Pulsante Espandibile -->
-            <div class="load-more-wrapper">
-                <button id="load-more-btn" class="btn btn-outline">Mostra Altri</button>
+            <!-- Pulsante espandi -->
+            <div class="load-more-wrapper fade-init">
+                <button id="load-more-btn" class="btn btn-outline">Vedi Altri Progetti</button>
             </div>
         </div>
     </section>
 
-<!-- ... Resto del codice identico (Contatti, Footer, Modal, Banner) ... -->
+    <!-- CONTATTI -->
+    <section id="contatti" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Contatta <span class="text-stroke">ElettricaMente</span></h2>
+            <div class="contact-hub">
+                <div class="contact-node fade-init"><i class="fas fa-envelope"></i><h3>Email</h3><p>info@elettricamentesrl.it</p></div>
+                <div class="contact-node fade-init"><i class="fas fa-phone"></i><h3>Tel</h3><p>+39 3338998658</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container footer-content">
+            <span>ElettricaMente S.R.L. &copy; 2025</span>
+        </div>
+    </footer>
+
+    <!-- MODAL PROGETTI -->
+    <div id="project-modal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <div class="modal-gallery">
+                    <div class="main-image-container"><img id="modal-main-img" src="" alt="Dettaglio Progetto"></div>
+                </div>
+                <div class="modal-details">
+                    <h2 id="modal-title"></h2>
+                    <div id="modal-tags"></div>
+                    <p id="modal-desc"></p>
+                    <div class="tech-specs">
+                        <h4>Specifiche Tecniche</h4>
+                        <ul id="modal-specs"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
