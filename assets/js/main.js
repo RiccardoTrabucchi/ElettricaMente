@@ -1,80 +1,45 @@
 document.addEventListener("DOMContentLoaded", function() {
     
     const projectsData = [
-        { 
-            id: 1, 
-            title: "Armadio elettrico Subdued", 
-            category: "Distribuzione elettrica", 
-            desc: "Cablaggio del quadro elettrico generale per un negozio di abbigliamento. Si occupa della distribuzione della linea elettrica a tutte le utenze.", 
-            specs: ["Schneider Electric", "Modbus", "Sicurezza elettrica", "Monitoraggio dell'energia"], 
-            images: [
-                "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80"
-            ] 
-        },
-        { 
-            id: 2, 
-            title: "Capannone domotico", 
-            category: "Domotica", 
-            desc: "Integrazione KNX per la gestione delle luci di un intero capannone di un'azienda alimentare.", 
-            specs: ["KNX", "Ilevia", "Controllo remoto"], 
-            images: [
-                "https://images.unsplash.com/photo-1558002038-1091a1661116?auto=format&fit=crop&w=800&q=80"
-            ] 
-        },
-        { 
-            id: 3, 
-            title: "PCB personalizzati per cilindri pneumatici", 
-            category: "PCB", 
-            desc: "PCB personalizzato per dei cilindri pneumatici controllati da elettrovalvole. Progettato e assemblato da noi.", 
-            specs: ["PCB", "Altium"], 
-            images: [
-                "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80"
-            ] 
-        }
+        { id: 1, title: "Armadio elettrico Subdued", category: "Distribuzione elettrica", desc: "Cablaggio del quadro elettrico generale.", specs: ["Schneider Electric", "Modbus"], images: ["https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80"] },
+        { id: 2, title: "Capannone domotico", category: "Domotica", desc: "Integrazione KNX industriale.", specs: ["KNX", "Ilevia"], images: ["https://images.unsplash.com/photo-1558002038-1091a1661116?auto=format&fit=crop&w=800&q=80"] },
+        { id: 3, title: "PCB personalizzati", category: "PCB", desc: "Design schede custom cilindri pneumatici.", specs: ["PCB", "Altium"], images: ["https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80"] }
     ];
 
-    /* --- COOKIE --- */
-    const cookieBanner = document.getElementById('cookie-banner');
-    const acceptBtn = document.getElementById('accept-cookies');
-    if (cookieBanner && acceptBtn) {
-        const consent = localStorage.getItem('elettricamente_consent');
-        if (!consent) setTimeout(() => { cookieBanner.classList.add('show'); }, 1000);
-        acceptBtn.onclick = () => { localStorage.setItem('elettricamente_consent', 'true'); cookieBanner.classList.remove('show'); };
-    }
-
     /* --- TYPEWRITER --- */
-    const typeStrings = ["Impianti Elettrici", "Automazioni", "Ingegneria"];
-    let count=0, index=0, isDeleting=false;
+    const typeText = ["Impianti Elettrici civili e industriali", "Automazioni", "Impianti tecnologici"];
+    let count=0, index=0, currentText="", letter="";
     (function type(){
         let el = document.getElementById('typing-placeholder');
         if(!el) return;
-        let current = typeStrings[count];
-        el.textContent = isDeleting ? current.substring(0, --index) : current.substring(0, ++index);
-        if(!isDeleting && index === current.length){ isDeleting=true; setTimeout(type, 2000); }
-        else if(isDeleting && index === 0){ isDeleting=false; count=(count+1)%typeStrings.length; setTimeout(type, 500); }
-        else setTimeout(type, isDeleting ? 50 : 100);
+        if(count===typeText.length)count=0; currentText=typeText[count]; letter=currentText.slice(0,++index);
+        el.textContent=letter;
+        if(letter.length===currentText.length){count++;index=0;setTimeout(type,2000);}else{setTimeout(type,100);}
     })();
 
-    /* --- CUBO --- */
+    /* --- CUBO SYNC --- */
+    const heroCube = document.getElementById('hero-cube');
     const cubeStates = ['show-front', 'show-right', 'show-back', 'show-left', 'show-top', 'show-bottom'];
-    let stateIdx = 0;
+    let cubeIdx = 0;
     setInterval(() => {
-        const cube = document.getElementById('hero-cube');
-        if(cube) {
-            stateIdx = (stateIdx + 1) % cubeStates.length;
-            cube.className = 'cube ' + cubeStates[stateIdx];
+        if(heroCube) {
+            cubeIdx = (cubeIdx + 1) % cubeStates.length;
+            heroCube.className = 'cube ' + cubeStates[cubeIdx];
         }
     }, 3000);
 
-    /* --- HMI --- */
-    let tankLvl = 10;
+    /* --- HMI SIMULATION --- */
+    let level = 10;
     setInterval(() => {
-        tankLvl = (tankLvl + 1) % 100;
         const liq = document.getElementById('hmi-liquid');
-        if(liq) liq.style.height = tankLvl + "%";
-        if(document.getElementById('hmi-level')) document.getElementById('hmi-level').innerText = tankLvl + "%";
-        if(document.getElementById('sys-led')) document.getElementById('sys-led').classList.add('active');
-        if(document.getElementById('hmi-motor-icon')) document.getElementById('hmi-motor-icon').style.animation = "spin 2s linear infinite";
+        const txt = document.getElementById('hmi-level');
+        if(liq) {
+            level = (level + 1) % 100;
+            liq.style.height = level + "%";
+            if(txt) txt.innerText = level + "%";
+            document.getElementById('sys-led').classList.add('active');
+            document.getElementById('hmi-motor-icon').style.animation = "spin 2s linear infinite";
+        }
     }, 500);
 
     /* --- CANVAS --- */
@@ -105,7 +70,13 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     document.querySelector('.close-modal').onclick = () => modal.classList.remove('show');
 
-    /* --- BURGER --- */
+    /* --- MENU MOBILE --- */
     const burger = document.querySelector('.burger');
     if(burger) burger.onclick = () => document.querySelector('.mobile-menu').classList.toggle('active');
+
+    /* --- FADE OBSERVER --- */
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+    });
+    document.querySelectorAll('.fade-init').forEach(el => obs.observe(el));
 });
