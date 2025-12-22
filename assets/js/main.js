@@ -1,13 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    
-    const projectsData = [
-        { id: 1, title: "Armadio elettrico Subdued", category: "Distribuzione elettrica", desc: "Cablaggio del quadro elettrico generale.", specs: ["Schneider Electric", "Modbus"], images: ["https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80"] },
-        { id: 2, title: "Capannone domotico", category: "Domotica", desc: "Integrazione KNX industriale.", specs: ["KNX", "Ilevia"], images: ["https://images.unsplash.com/photo-1558002038-1091a1661116?auto=format&fit=crop&w=800&q=80"] },
-        { id: 3, title: "PCB personalizzati", category: "PCB", desc: "Design schede custom cilindri pneumatici.", specs: ["PCB", "Altium"], images: ["https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80"] }
-    ];
-
-    /* --- TYPEWRITER --- */
-    const typeText = ["Impianti Elettrici civili e industriali", "Automazioni", "Impianti tecnologici"];
+    const typeText = ["Impianti Elettrici", "Automazioni", "Impianti tecnologici"];
     let count=0, index=0, currentText="", letter="";
     (function type(){
         let el = document.getElementById('typing-placeholder');
@@ -17,32 +9,16 @@ document.addEventListener("DOMContentLoaded", function() {
         if(letter.length===currentText.length){count++;index=0;setTimeout(type,2000);}else{setTimeout(type,100);}
     })();
 
-    /* --- CUBO SYNC --- */
     const heroCube = document.getElementById('hero-cube');
-    const cubeStates = ['show-front', 'show-right', 'show-back', 'show-left', 'show-top', 'show-bottom'];
-    let cubeIdx = 0;
-    setInterval(() => {
-        if(heroCube) {
-            cubeIdx = (cubeIdx + 1) % cubeStates.length;
-            heroCube.className = 'cube ' + cubeStates[cubeIdx];
-        }
-    }, 3000);
+    if(heroCube) {
+        let currentIndex = 0;
+        const cubeStates = ['show-front', 'show-right', 'show-back', 'show-left', 'show-top', 'show-bottom'];
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % cubeStates.length;
+            heroCube.className = 'cube ' + cubeStates[currentIndex];
+        }, 3000);
+    }
 
-    /* --- HMI SIMULATION --- */
-    let level = 10;
-    setInterval(() => {
-        const liq = document.getElementById('hmi-liquid');
-        const txt = document.getElementById('hmi-level');
-        if(liq) {
-            level = (level + 1) % 100;
-            liq.style.height = level + "%";
-            if(txt) txt.innerText = level + "%";
-            document.getElementById('sys-led').classList.add('active');
-            document.getElementById('hmi-motor-icon').style.animation = "spin 2s linear infinite";
-        }
-    }, 500);
-
-    /* --- CANVAS --- */
     const canvas = document.getElementById('circuit-canvas');
     if(canvas) {
         const ctx = canvas.getContext('2d');
@@ -56,27 +32,8 @@ document.addEventListener("DOMContentLoaded", function() {
         draw();
     }
 
-    /* --- MODAL --- */
-    const modal = document.getElementById('project-modal');
-    document.querySelectorAll('.project-card').forEach(c => {
-        c.onclick = () => {
-            const p = projectsData.find(prj => prj.id == c.dataset.id);
-            if(p && modal) {
-                document.getElementById('modal-title').innerText = p.title;
-                document.getElementById('modal-main-img').src = p.images[0];
-                modal.classList.add('show');
-            }
-        };
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
     });
-    document.querySelector('.close-modal').onclick = () => modal.classList.remove('show');
-
-    /* --- MENU MOBILE --- */
-    const burger = document.querySelector('.burger');
-    if(burger) burger.onclick = () => document.querySelector('.mobile-menu').classList.toggle('active');
-
-    /* --- FADE OBSERVER --- */
-    const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-    });
-    document.querySelectorAll('.fade-init').forEach(el => obs.observe(el));
+    document.querySelectorAll('.fade-init').forEach(el => observer.observe(el));
 });
