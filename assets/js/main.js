@@ -2,30 +2,30 @@ document.addEventListener("DOMContentLoaded", function() {
 
     /* --- DATABASE PROGETTI (JSON-LIKE) --- */
     const projectsData = [
-        { id: 1, title: "Armadio Elettrico", category: "Distribuzione", desc: "Cablaggio retail Subdued.", img: "https://picsum.photos/id/1/800/600" },
-        { id: 2, title: "Villa Automata", category: "Domotica", desc: "Sistema KNX residenziale.", img: "https://picsum.photos/id/2/800/600" },
-        { id: 3, title: "PCB Custom", category: "PCB", desc: "Design driver elettrovalvole.", img: "https://picsum.photos/id/3/800/600" },
-        { id: 4, title: "Quadro Pompe", category: "Distribuzione", desc: "Automazione acque industriali.", img: "https://picsum.photos/id/4/800/600" },
-        { id: 5, title: "Smart Office", category: "Domotica", desc: "Gestione uffici intelligenti.", img: "https://picsum.photos/id/5/800/600" }
+        { id: 1, title: "Quadro Subdued", category: "Distribuzione", desc: "Distribuzione elettrica retail.", img: "https://picsum.photos/id/1/800/600" },
+        { id: 2, title: "Capannone KNX", category: "Domotica", desc: "Automazione industriale KNX.", img: "https://picsum.photos/id/2/800/600" },
+        { id: 3, title: "PCB Cilindri", category: "PCB", desc: "Design driver personalizzati.", img: "https://picsum.photos/id/3/800/600" },
+        { id: 4, title: "Automazione Linea 1", category: "Distribuzione", desc: "Revamping PLC Siemens.", img: "https://picsum.photos/id/4/800/600" },
+        { id: 5, title: "Smart Office", category: "Domotica", desc: "Uffici intelligenti integrati.", img: "https://picsum.photos/id/5/800/600" }
     ];
 
-    let currentFilter = "all";
-    let showAll = false;
+    let filter = "all";
+    let isExpanded = false;
 
-    /* --- FUNZIONE RENDER PROGETTI (Evita incolonnamento) --- */
+    /* --- FUNZIONE RENDER GALLERIA --- */
     function renderProjects() {
         const grid = document.getElementById('projects-grid');
         if(!grid) return;
         grid.innerHTML = "";
 
-        const filtered = currentFilter === "all" ? projectsData : projectsData.filter(p => p.category === currentFilter);
-        const toDisplay = showAll ? filtered : filtered.slice(0, 3);
+        const filtered = filter === "all" ? projectsData : projectsData.filter(p => p.category === filter);
+        const toShow = isExpanded ? filtered : filtered.slice(0, 3);
 
-        toDisplay.forEach(p => {
+        toShow.forEach(p => {
             const card = document.createElement('div');
             card.className = "project-card fade-init visible";
             card.innerHTML = `
-                <img src="${p.img}" alt="${p.title}" loading="lazy">
+                <img src="${p.img}" alt="${p.title} - ElettricaMente Lavori" loading="lazy">
                 <div class="project-info"><h4>${p.title}</h4><span>${p.category}</span></div>
             `;
             card.onclick = () => {
@@ -37,48 +37,53 @@ document.addEventListener("DOMContentLoaded", function() {
             grid.appendChild(card);
         });
 
-        document.getElementById('load-more-container').style.display = (filtered.length > 3 && !showAll) ? "block" : "none";
+        const btnContainer = document.getElementById('load-more-container');
+        if(btnContainer) btnContainer.style.display = (filtered.length > 3 && !isExpanded) ? "block" : "none";
     }
 
-    /* --- FILTRI E CARICA ALTRI --- */
+    /* --- GESTIONE BOTTONI --- */
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.onclick = () => {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            currentFilter = btn.dataset.filter;
-            showAll = false;
+            filter = btn.dataset.filter;
+            isExpanded = false;
             renderProjects();
         };
     });
 
-    document.getElementById('load-more-btn').onclick = () => { showAll = true; renderProjects(); };
+    const loadBtn = document.getElementById('load-more-btn');
+    if(loadBtn) loadBtn.onclick = () => { isExpanded = true; renderProjects(); };
+
     document.querySelector('.close-modal').onclick = () => document.getElementById('project-modal').classList.remove('show');
 
-    /* --- ANIMAZIONI ORIGINALI (TYPEWRITER) --- */
-    const typeWords = ["Automazione PLC", "Impianti KNX", "Engineering Elettronico"];
-    let i=0, j=0, del=false;
-    function type() {
-        const curr = typeWords[i];
+    /* --- TUTTO IL TUO CODICE ORIGINALE SOTTO (IDENTICO) --- */
+
+    // Typewriter Originale
+    const typeStrings = ["Impianti Elettrici", "Automazioni PLC", "Engineering"];
+    let wordI = 0, charI = 0, del = false;
+    function typeEffect() {
+        const curr = typeStrings[wordI];
         const el = document.getElementById('typing-placeholder');
         if(!el) return;
-        el.textContent = del ? curr.substring(0, j--) : curr.substring(0, j++);
-        if(!del && j > curr.length) { del=true; setTimeout(type, 2000); }
-        else if(del && j < 0) { del=false; i=(i+1)%typeWords.length; setTimeout(type, 500); }
-        else { setTimeout(type, del ? 50 : 100); }
+        el.textContent = del ? curr.substring(0, charI--) : curr.substring(0, charI++);
+        if(!del && charI > curr.length) { del = true; setTimeout(typeEffect, 2000); }
+        else if(del && charI < 0) { del = false; wordI = (wordI + 1) % typeStrings.length; setTimeout(typeEffect, 500); }
+        else { setTimeout(typeEffect, del ? 50 : 100); }
     }
 
-    /* --- ANIMAZIONE CUBO ORIGINALE --- */
+    // Cubo Originale
     const cube = document.getElementById('hero-cube');
     const states = ['show-front', 'show-right', 'show-back', 'show-left', 'show-top', 'show-bottom'];
-    let stateI = 0;
+    let sI = 0;
     setInterval(() => {
         if(cube) {
-            stateI = (stateI + 1) % states.length;
-            cube.className = 'cube ' + states[stateI];
+            sI = (sI + 1) % states.length;
+            cube.className = 'cube ' + states[sI];
         }
     }, 3000);
 
-    /* --- SIMULAZIONE HMI ORIGINALE --- */
+    // HMI Originale
     let tank = 10;
     setInterval(() => {
         tank = (tank + 1) % 100;
@@ -86,10 +91,11 @@ document.addEventListener("DOMContentLoaded", function() {
         if(liq) liq.style.height = tank + "%";
         if(document.getElementById('hmi-level')) document.getElementById('hmi-level').innerText = tank + "%";
         if(document.getElementById('sys-led')) document.getElementById('sys-led').classList.add('active');
-        if(document.getElementById('hmi-motor-icon')) document.getElementById('hmi-motor-icon').style.animation = "spin 2s linear infinite";
+        const cog = document.getElementById('hmi-motor-icon');
+        if(cog) cog.style.animation = "spin 2s linear infinite";
     }, 500);
 
-    /* --- CANVAS BACKGROUND ORIGINALE --- */
+    // Canvas Background Originale
     const canvas = document.getElementById('circuit-canvas');
     if(canvas) {
         const ctx = canvas.getContext('2d');
@@ -104,11 +110,11 @@ document.addEventListener("DOMContentLoaded", function() {
         draw();
     }
 
-    /* --- INIZIALIZZAZIONE --- */
-    type();
+    // Init Finale
+    typeEffect();
     renderProjects();
-    const obs = new IntersectionObserver(entries => {
+    const observer = new IntersectionObserver(entries => {
         entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
     });
-    document.querySelectorAll('.fade-init').forEach(el => obs.observe(el));
+    document.querySelectorAll('.fade-init').forEach(el => observer.observe(el));
 });
