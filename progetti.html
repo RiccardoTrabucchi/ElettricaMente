@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I Nostri Lavori | ElettricaMente</title>
+    <title>Archivio Lavori | ElettricaMente S.R.L.</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -22,31 +22,40 @@
 
     <section class="services" style="padding-top: 50px;">
         <h2 class="section-title">Archivio Lavori</h2>
-        <p style="text-align:center; color:var(--text-muted); margin-bottom: 3rem;">
-            Una selezione dei nostri interventi su impianti, quadri e automazioni.
+        <p style="text-align:center; color:var(--text-muted); margin-bottom: 2rem;">
+            Una selezione dei nostri interventi tecnici sul campo.
         </p>
         
-        <!-- Qui Javascript inserirà le card dei progetti -->
+        <!-- Bottoni per i filtri categoria -->
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">Tutti i Lavori</button>
+            <button class="filter-btn" data-filter="Impianti">Impianti Elettrici</button>
+            <button class="filter-btn" data-filter="Automazione">Automazione</button>
+            <button class="filter-btn" data-filter="Domotica">Domotica</button>
+            <button class="filter-btn" data-filter="Sicurezza">Sicurezza</button>
+            <button class="filter-btn" data-filter="Prototipazione">PCB e 3D</button>
+        </div>
+        
+        <!-- La griglia verrà riempita automaticamente da main.js -->
         <div id="progetti-grid" class="grid-3"></div>
     </section>
 
-    <!-- MODAL (Finestra a comparsa per la Galleria) -->
+    <!-- Finestra Nera per sfogliare le foto -->
     <div id="modal-galleria" class="modal">
         <span class="close-modal"><i class="fa-solid fa-xmark"></i></span>
         <div class="modal-content">
             <div class="modal-img-container">
-                <button class="nav-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
-                <img id="img-corrente" src="" alt="Progetto">
-                <button class="nav-btn next-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                <button class="nav-btn prev-btn" title="Foto Precedente"><i class="fa-solid fa-chevron-left"></i></button>
+                <img id="img-corrente" src="" alt="Dettaglio Progetto">
+                <button class="nav-btn next-btn" title="Foto Successiva"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
             <div class="modal-info">
-                <h3 id="modal-titolo">Titolo Progetto</h3>
-                <p id="modal-descrizione">Descrizione dettagliata dell'intervento...</p>
+                <h3 id="modal-titolo">Titolo</h3>
+                <p id="modal-descrizione">Descrizione...</p>
             </div>
         </div>
     </div>
 
-    <!-- Importiamo il nostro motore JavaScript -->
     <script src="js/main.js"></script>
 </body>
 </html>
