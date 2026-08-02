@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ElettricaMente S.R.L. | Impianti e Automazioni</title>
+    <title>ElettricaMente S.R.L. | Impianti, Automazione e PCB</title>
     <link rel="stylesheet" href="css/style.css">
+    <!-- FontAwesome per le icone -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
@@ -12,7 +14,6 @@
     <header>
         <nav>
             <div class="logo-container">
-                <!-- Sostituisci il src con il percorso del tuo logo -->
                 <img src="assets/img/logo.png" alt="ElettricaMente Logo" class="logo">
             </div>
             <ul>
@@ -23,41 +24,119 @@
         </nav>
     </header>
 
-    <!-- HERO SECTION -->
+    <!-- HERO SECTION CON SCHEMA ELETTRICO ANIMATO -->
     <section class="hero">
-        <h1>Soluzioni Elettriche & <span>Automazioni</span> Avanzate</h1>
-        <p>Progettazione, realizzazione e manutenzione di impianti elettrici civili e industriali. Dal rifacimento macchine alla progettazione PCB e stampa 3D.</p>
-        <a href="progetti.html" class="btn">Guarda i nostri lavori</a>
+        <!-- Background SVG: Schema Elettrico & Impulsi -->
+        <div class="circuit-bg">
+            <svg width="100%" height="100%" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <!-- Effetto "Neon Glow" per gli impulsi -->
+                    <filter id="pulseGlow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur1" />
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur2" />
+                        <feMerge>
+                            <feMergeNode in="blur1" />
+                            <feMergeNode in="blur2" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                </defs>
+                
+                <!-- Tracce dello schema (Linee) -->
+                <g stroke="rgba(0, 168, 232, 0.15)" stroke-width="1.5" fill="none">
+                    <path d="M -100,150 L 300,150 L 350,100 L 800,100 L 850,150 L 1500,150" />
+                    <path d="M 1500,450 L 1100,450 L 1050,500 L 500,500 L 450,450 L -100,450" />
+                    <path d="M 200,-100 L 200,250 L 250,300 L 600,300 L 650,350 L 650,700" />
+                    <path d="M 1200,-100 L 1200,200 L 1150,250 L 900,250 L 850,300 L 850,700" />
+                </g>
+                
+                <!-- Nodi (Punti di giunzione o saldatura) -->
+                <g fill="none" stroke="rgba(0, 168, 232, 0.5)" stroke-width="2">
+                    <circle cx="300" cy="150" r="4" />
+                    <circle cx="800" cy="100" r="4" />
+                    <circle cx="1100" cy="450" r="4" />
+                    <circle cx="500" cy="500" r="4" />
+                    <circle cx="200" cy="250" r="4" />
+                    <circle cx="600" cy="300" r="4" />
+                    <circle cx="1200" cy="200" r="4" />
+                    <circle cx="900" cy="250" r="4" />
+                </g>
+
+                <!-- Impulsi di corrente che viaggiano -->
+                <g filter="url(#pulseGlow)">
+                    <circle r="3" fill="#FFC300">
+                        <animateMotion dur="5s" repeatCount="indefinite" path="M -100,150 L 300,150 L 350,100 L 800,100 L 850,150 L 1500,150" />
+                    </circle>
+                    <circle r="3" fill="#00A8E8">
+                        <animateMotion dur="7s" repeatCount="indefinite" path="M 1500,450 L 1100,450 L 1050,500 L 500,500 L 450,450 L -100,450" />
+                    </circle>
+                    <circle r="3" fill="#FFC300">
+                        <animateMotion dur="4s" repeatCount="indefinite" path="M 200,-100 L 200,250 L 250,300 L 600,300 L 650,350 L 650,700" />
+                    </circle>
+                    <circle r="3" fill="#00A8E8">
+                        <animateMotion dur="6s" repeatCount="indefinite" path="M 1200,-100 L 1200,200 L 1150,250 L 900,250 L 850,300 L 850,700" />
+                    </circle>
+                </g>
+            </svg>
+        </div>
+
+        <!-- Contenuto Testuale -->
+        <div class="hero-content">
+            <h1>Sistemi Elettrici <span class="highlight">Avanzati</span><br>& <span class="accent">Automazione</span></h1>
+            <p>Ingegneria elettrica di precisione. Dalla progettazione di quadri industriali e circuiti PCB, alla realizzazione e manutenzione di impianti civili complessi. Innovazione pura.</p>
+            <a href="progetti.html" class="btn">
+                Sfoglia i Progetti <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
     </section>
 
     <!-- SERVIZI -->
     <section class="services">
-        <h2 class="section-title">Di cosa ci occupiamo</h2>
+        <h2 class="section-title">Aree di Intervento</h2>
         <div class="grid-3">
+            
             <div class="card">
+                <!-- Icona specifica per la corrente elettrica in struttura -->
+                <i class="fa-solid fa-plug-circle-bolt"></i>
                 <h3>Impianti Civili e Industriali</h3>
-                <p>Installazione, collaudo e manutenzione di impianti sicuri ed efficienti per abitazioni e industrie.</p>
+                <p>Progettazione, installazione e certificazione di impianti elettrici ad alta efficienza per infrastrutture civili e complessi industriali.</p>
             </div>
+            
             <div class="card">
-                <h3>Automazione Industriale</h3>
-                <p>Dal rifacimento di macchine utensili a processi complessi, sviluppiamo logiche e quadri di controllo.</p>
+                <!-- Icona diagramma per le logiche PLC -->
+                <i class="fa-solid fa-diagram-project"></i>
+                <h3>Automazione & PLC</h3>
+                <p>Integrazione di sistemi, revamping macchine utensili e sviluppo logiche per processi industriali delicati e strutture complesse.</p>
             </div>
+            
             <div class="card">
-                <h3>Progettazione Elettrica & Quadri</h3>
-                <p>Disegno e cablaggio di quadri elettrici certificati, studiati per l'efficienza e la sicurezza.</p>
+                <!-- Icona rack/quadro per quadri elettrici -->
+                <i class="fa-solid fa-server"></i>
+                <h3>Progettazione Quadri</h3>
+                <p>Studio tecnico, dimensionamento e cablaggio strutturato di quadri elettrici di distribuzione e automazione, nel rispetto delle normative.</p>
             </div>
+            
             <div class="card">
+                <!-- Icona chip per schede elettroniche -->
+                <i class="fa-solid fa-microchip"></i>
                 <h3>Progettazione PCB</h3>
-                <p>Sviluppo, progettazione e realizzazione di circuiti stampati su misura per ogni esigenza elettronica.</p>
+                <p>Dallo schema logico al circuito stampato. Sviluppiamo e realizziamo PCB customizzati per specifiche esigenze elettroniche aziendali.</p>
             </div>
+            
             <div class="card">
-                <h3>Progettazione & Stampa 3D</h3>
-                <p>Realizzazione di componenti meccanici e prototipi in materiali tecnici tramite manifattura additiva.</p>
+                <!-- Icona layers per stampa 3D additiva -->
+                <i class="fa-solid fa-layer-group"></i>
+                <h3>Progettazione e Stampa 3D</h3>
+                <p>Design CAD e prototipazione rapida. Utilizziamo stampanti 3D avanzate e materiali tecnici per realizzare componenti meccanici su misura.</p>
             </div>
+            
             <div class="card">
-                <h3>Riparazioni e Assistenza</h3>
-                <p>Interventi rapidi e mirati per guasti elettrici o malfunzionamenti su macchinari e impianti.</p>
+                <!-- Icona strumenti per riparazione -->
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <h3>Riparazioni e Diagnostica</h3>
+                <p>Troubleshooting avanzato. Interventi mirati per la risoluzione rapida di guasti complessi su linee di produzione e macchinari.</p>
             </div>
+
         </div>
     </section>
 
