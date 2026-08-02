@@ -1,1 +1,156 @@
+/* --- VARIABILI COLORI E STILI --- */
+:root {
+    --blue-electric: #3A4BCC;
+    --teal-aqua: #00A8E8;
+    --dark-blue: #0A1128;
+    --yellow-accent: #FFC300;
+    --bg-light: #F7F9FC;
+    --text-main: #333333;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+/* --- NAVIGAZIONE --- */
+header {
+    background: white;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+nav img.logo {
+    height: 50px; /* Regola in base al tuo logo */
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--dark-blue);
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 5px;
+    transition: var(--transition);
+}
+
+nav a:hover {
+    color: var(--blue-electric);
+}
+
+/* Effetto sottolineatura dinamica */
+nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px;
+    bottom: 0;
+    left: 0;
+    background: var(--yellow-accent);
+    transition: var(--transition);
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+/* --- HERO SECTION (La prima cosa che si vede) --- */
+.hero {
+    background: linear-gradient(135deg, var(--dark-blue) 0%, var(--blue-electric) 100%);
+    color: white;
+    padding: 100px 5%;
+    text-align: center;
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%); /* Taglio obliquo dinamico */
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.hero h1 span {
+    color: var(--yellow-accent);
+}
+
+.hero p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto 2rem auto;
+    color: #e0e0e0;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: var(--yellow-accent);
+    color: var(--dark-blue);
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 50px;
+    transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(255, 195, 0, 0.4);
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 195, 0, 0.6);
+}
+
+/* --- SERVIZI --- */
+.services {
+    padding: 80px 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.section-title {
+    text-align: center;
+    color: var(--dark-blue);
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.card {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    border-top: 4px solid var(--teal-aqua);
+    transition: var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    border-top: 4px solid var(--blue-electric);
+}
