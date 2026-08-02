@@ -1,7 +1,7 @@
 [
     {
         "id": "domotica-villa",
-        "titolo": "Impianto Domotico Completo per Villa Privata",
+        "titolo": "Impianto Domotico per Villa Privata",
         "categoria": "Domotica",
         "descrizione": "Realizzazione impianto domotico per il controllo integrato di illuminazione, tapparelle e termoregolazione. Gestione centralizzata e supervisione da remoto.",
         "copertina": "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&q=80&w=600",
@@ -12,4 +12,43 @@
     },
     {
         "id": "quadro-automazione-1",
-        "titolo": "Quadro di Automazione Linea Produttiva
+        "titolo": "Quadro Automazione Linea Produttiva",
+        "categoria": "Automazione",
+        "descrizione": "Progettazione e cablaggio quadro di controllo per una linea di assemblaggio robotizzata. Sviluppo logica di controllo integrata.",
+        "copertina": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=600",
+        "galleria": [
+            "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=1200",
+            "https://images.unsplash.com/photo-1581092335397-9583eb92d232?auto=format&fit=crop&q=80&w=1200"
+        ]
+    },
+    {
+        "id": "impianto-industriale",
+        "titolo": "Impianto Elettrico Capannone",
+        "categoria": "Impianti",
+        "descrizione": "Posa in opera e certificazione dell'impianto elettrico di potenza e illuminazione per un nuovo sito produttivo industriale.",
+        "copertina": "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80&w=600",
+        "galleria": [
+            "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80&w=1200"
+        ]
+    },
+    {
+        "id": "sicurezza-aziendale",
+        "titolo": "Sistema Antintrusione e Videosorveglianza",
+        "categoria": "Sicurezza",
+        "descrizione": "Installazione di un sistema di allarme volumetrico e perimetrale, integrato con telecamere IP ad alta risoluzione per un polo logistico.",
+        "copertina": "https://images.unsplash.com/photo-1557597774-9d273e3f426e?auto=format&fit=crop&q=80&w=600",
+        "galleria": [
+            "https://images.unsplash.com/photo-1557597774-9d273e3f426e?auto=format&fit=crop&q=80&w=1200"
+        ]
+    },
+    {
+        "id": "pcb-sensori",
+        "titolo": "Scheda Elettronica per Sensori",
+        "categoria": "Prototipazione",
+        "descrizione": "Ingegnerizzazione e sbrogliatura di un circuito stampato custom per la lettura di sensori industriali ad alta precisione.",
+        "copertina": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=600",
+        "galleria": [
+            "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1200"
+        ]
+    }
+]
