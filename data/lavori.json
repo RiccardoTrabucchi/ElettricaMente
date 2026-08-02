@@ -1,1 +1,15 @@
-
+[
+    {
+        "id": "domotica-villa",
+        "titolo": "Impianto Domotico Completo per Villa Privata",
+        "categoria": "Domotica",
+        "descrizione": "Realizzazione impianto domotico per il controllo integrato di illuminazione, tapparelle e termoregolazione. Gestione centralizzata e supervisione da remoto.",
+        "copertina": "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&q=80&w=600",
+        "galleria": [
+            "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&q=80&w=1200",
+            "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1200"
+        ]
+    },
+    {
+        "id": "quadro-automazione-1",
+        "titolo": "Quadro di Automazione Linea Produttiva
